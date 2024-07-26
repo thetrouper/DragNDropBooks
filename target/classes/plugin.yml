@@ -1,0 +1,4 @@
+name: DragNDropBooks
+version: '1.0'
+main: com.vexx.dragNDropBooks.DragNDropBooks
+api-version: '1.21'
