@@ -71,16 +71,19 @@ public final class DragNDropBooks extends JavaPlugin implements Listener {
 
     @EventHandler
     public void onEnchantedItemUse(InventoryClickEvent e) {
+        if (e.getCursor() == null || e.getCurrentItem() == null) return;
         Player player = (Player) e.getWhoClicked();
         ItemStack book = e.getCurrentItem();
         ItemStack enchantedItem = e.getCursor();
         ItemMeta enchantedItemMetaData = enchantedItem.getItemMeta();
+        if(enchantedItemMetaData == null) return;
         if(book.getType().isAir())  return;
         if(book.getType() != Material.BOOK && book.getType() != Material.ENCHANTED_BOOK ) return;
         if(book.getAmount() > 1) return;
         if(!enchantedItemMetaData.hasEnchants()) return;
         if(book.getType() == Material.BOOK) book.setType(Material.ENCHANTED_BOOK);
         EnchantmentStorageMeta enchantedBookMetaData = (EnchantmentStorageMeta)book.getItemMeta();
+        if(enchantedBookMetaData == null) return;
         Map<Enchantment, Integer> itemEnchantments = enchantedItem.getEnchantments();
         for(Map.Entry<Enchantment, Integer> entry : itemEnchantments.entrySet()){
             Enchantment proposedEnchantment = entry.getKey();
