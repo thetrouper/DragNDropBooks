@@ -18,52 +18,58 @@ public final class DragNDropBooks extends JavaPlugin implements Listener {
 
     @Override
     public void onEnable() {
-        // Plugin startup logic
         Bukkit.getPluginManager().registerEvents(this, this);
     }
 
     @EventHandler
     public void onEnchantedBookUse(InventoryClickEvent e) {
-        if(e.getCursor() == null || e.getCursor().getType() != Material.ENCHANTED_BOOK || e.getCursor() == null || e.getCurrentItem() == null) return;
-        Player player = (Player) e.getWhoClicked();
-        ItemStack item = e.getCurrentItem();
         ItemStack enchantedBook = e.getCursor();
-        ItemMeta itemMeta = item.getItemMeta();
-        if(item == null || item.getType().isAir() || enchantedBook.getType().isAir()) return;
-        if(enchantedBook.getAmount() > 1){
-            player.sendMessage(ChatColor.RED + "Book stack size must be 1.");
+        ItemStack item = e.getCurrentItem();
+
+        if(enchantedBook == null ||
+                item == null ||
+                enchantedBook.getType() != Material.ENCHANTED_BOOK ||
+                item.getType().isAir() ||
+                enchantedBook.getType().isAir() ||
+                enchantedBook.getAmount() > 1) {
             return;
         }
-        EnchantmentStorageMeta bookEnchantmentMetaData = (EnchantmentStorageMeta)enchantedBook.getItemMeta();
+
+        EnchantmentStorageMeta bookEnchantmentMetaData = (EnchantmentStorageMeta) enchantedBook.getItemMeta();
+
         if (!bookEnchantmentMetaData.hasStoredEnchants()) return;
+
+        Player player = (Player) e.getWhoClicked();
         Map<Enchantment, Integer> bookEnchantments = bookEnchantmentMetaData.getStoredEnchants();
+        ItemMeta itemMeta = item.getItemMeta();
+
         for(Map.Entry<Enchantment, Integer> entry : bookEnchantments.entrySet()){
             Enchantment proposedEnchantment = entry.getKey();
             Integer proposedEnchantmentPowerLevel = entry.getValue();
-            if(proposedEnchantment.canEnchantItem(item)) {
-                if(itemMeta.hasEnchant(proposedEnchantment)) {
-                    if(proposedEnchantmentPowerLevel > itemMeta.getEnchantLevel(proposedEnchantment)) {
-                        item.addUnsafeEnchantment(proposedEnchantment, proposedEnchantmentPowerLevel);
-                        bookEnchantmentMetaData.removeStoredEnchant(proposedEnchantment);
-                    }
-                    else{
-                        player.sendMessage(ChatColor.RED + "Item's current enchant contains higher or equal power level than enchanted book.");
-                        continue;
-                    }
-                }
-                else{
-                    item.addUnsafeEnchantment(proposedEnchantment, proposedEnchantmentPowerLevel);
-                    bookEnchantmentMetaData.removeStoredEnchant(proposedEnchantment);
-                }
-            }
-            else{
-                player.sendMessage(ChatColor.RED + "Cannot apply enchant to this item type.");
+
+            if(itemMeta.hasEnchant(proposedEnchantment) &&
+                    proposedEnchantmentPowerLevel <= itemMeta.getEnchantLevel(proposedEnchantment)) {
+                player.sendMessage(ChatColor.RED + "Item's current enchant (" + proposedEnchantment.getKey().getKey()
+                        + ", Level " + itemMeta.getEnchantLevel(proposedEnchantment)
+                        + ") contains higher or equal power level than enchanted book.");
                 continue;
             }
+
+            if(!proposedEnchantment.canEnchantItem(item)) {
+                player.sendMessage(ChatColor.RED + "Cannot apply enchant ("
+                        + proposedEnchantment.getKey().getKey() + ", Level " + proposedEnchantmentPowerLevel
+                        + ") to this item type.");
+                continue;
+            }
+
+            item.addUnsafeEnchantment(proposedEnchantment, proposedEnchantmentPowerLevel);
+            bookEnchantmentMetaData.removeStoredEnchant(proposedEnchantment);
         }
-        if(!bookEnchantmentMetaData.hasStoredEnchants()){
+
+        if(!bookEnchantmentMetaData.hasStoredEnchants()) {
             enchantedBook.setType(Material.BOOK);
         }
+
         enchantedBook.setItemMeta(bookEnchantmentMetaData);
         e.setCancelled(true);
         e.setCurrentItem(item);
@@ -71,42 +77,47 @@ public final class DragNDropBooks extends JavaPlugin implements Listener {
 
     @EventHandler
     public void onEnchantedItemUse(InventoryClickEvent e) {
-        if (e.getCursor() == null || e.getCurrentItem() == null) return;
-        Player player = (Player) e.getWhoClicked();
         ItemStack book = e.getCurrentItem();
         ItemStack enchantedItem = e.getCursor();
+
+        if(book == null ||
+                enchantedItem == null ||
+                book.getType().isAir() ||
+                book.getType() != Material.BOOK && book.getType() != Material.ENCHANTED_BOOK ||
+                book.getAmount() > 1) {
+            return;
+        }
+
         ItemMeta enchantedItemMetaData = enchantedItem.getItemMeta();
-        if(enchantedItemMetaData == null) return;
-        if(book.getType().isAir())  return;
-        if(book.getType() != Material.BOOK && book.getType() != Material.ENCHANTED_BOOK ) return;
-        if(book.getAmount() > 1) return;
-        if(!enchantedItemMetaData.hasEnchants()) return;
-        if(book.getType() == Material.BOOK) book.setType(Material.ENCHANTED_BOOK);
-        EnchantmentStorageMeta enchantedBookMetaData = (EnchantmentStorageMeta)book.getItemMeta();
-        if(enchantedBookMetaData == null) return;
+        if(enchantedItemMetaData == null ||
+                !enchantedItemMetaData.hasEnchants()) {
+            return;
+        }
+
+        if(book.getType() == Material.BOOK) {
+            book.setType(Material.ENCHANTED_BOOK);
+        }
+
+        Player player = (Player) e.getWhoClicked();
         Map<Enchantment, Integer> itemEnchantments = enchantedItem.getEnchantments();
+        EnchantmentStorageMeta enchantedBookMetaData = (EnchantmentStorageMeta)book.getItemMeta();
+
         for(Map.Entry<Enchantment, Integer> entry : itemEnchantments.entrySet()){
             Enchantment proposedEnchantment = entry.getKey();
             Integer proposedEnchantmentPowerLevel = entry.getValue();
-            if(enchantedBookMetaData.hasStoredEnchant(proposedEnchantment))
-            {
-                if (proposedEnchantmentPowerLevel > enchantedBookMetaData.getStoredEnchantLevel(proposedEnchantment))
-                {
-                    enchantedBookMetaData.addStoredEnchant(proposedEnchantment, proposedEnchantmentPowerLevel, true);
-                    enchantedItem.removeEnchantment(proposedEnchantment);
-                }
-                else
-                {
-                    player.sendMessage(ChatColor.RED + "Book's current enchant contains higher or equal power level than enchanted item.");
-                    continue;
-                }
+
+            if(enchantedBookMetaData.hasStoredEnchant(proposedEnchantment) &&
+                    proposedEnchantmentPowerLevel <= enchantedBookMetaData.getStoredEnchantLevel(proposedEnchantment)) {
+                player.sendMessage(ChatColor.RED + "Book's current enchant (" + proposedEnchantment.getKey().getKey()
+                        + ", Level " + enchantedBookMetaData.getStoredEnchantLevel(proposedEnchantment)
+                        + ") contains higher or equal power level than enchanted item.");
+                continue;
             }
-            else
-            {
-                enchantedBookMetaData.addStoredEnchant(proposedEnchantment, proposedEnchantmentPowerLevel, true);
-                enchantedItem.removeEnchantment(proposedEnchantment);
-            }
+
+            enchantedBookMetaData.addStoredEnchant(proposedEnchantment, proposedEnchantmentPowerLevel, true);
+            enchantedItem.removeEnchantment(proposedEnchantment);
         }
+
         e.setCancelled(true);
         book.setItemMeta(enchantedBookMetaData);
         e.setCurrentItem(book);
