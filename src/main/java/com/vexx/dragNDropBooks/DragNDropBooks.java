@@ -3,6 +3,7 @@ package com.vexx.dragNDropBooks;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -19,6 +20,10 @@ public final class DragNDropBooks extends JavaPlugin implements Listener {
     @Override
     public void onEnable() {
         Bukkit.getPluginManager().registerEvents(this, this);
+        getConfig().options().copyDefaults();
+        saveDefaultConfig();
+        FileConfiguration config = getConfig();
+        getCommand("dragndropbooks").setExecutor(new Commands(this));
     }
 
     @EventHandler
