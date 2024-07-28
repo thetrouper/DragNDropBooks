@@ -77,12 +77,12 @@ public final class DragNDropBooks extends JavaPlugin implements Listener {
                 System.out.println("enchantedBookEnchantLevel = " + enchantedBookEnchantLevel);
                 int enchantmentCost = Cost.CalculateEnchantmentCost(enchantedBookEnchantLevel, itemEnchantLevel, experienceCostPerLevel);
                 System.out.println("enchantmentCost = " + enchantmentCost);
-                int playerLevel = player.getExpToLevel();
+                int playerLevel = player.getLevel();
                 System.out.println("playerLevel = " + playerLevel);
                 if (playerLevel > enchantmentCost) {
                      item.addUnsafeEnchantment(proposedEnchantment, proposedEnchantmentPowerLevel);
                      bookEnchantmentMetaData.removeStoredEnchant(proposedEnchantment);
-                     player.setLevel(enchantmentCost - playerLevel);
+                     player.setLevel(playerLevel - enchantmentCost);
                      System.out.println("Setting player level to " + String.valueOf(enchantmentCost - playerLevel));
                 }
                 else {
@@ -156,7 +156,8 @@ public final class DragNDropBooks extends JavaPlugin implements Listener {
                 int refund = (int) Math.round(Cost.CalculateEnchantmentRefund(enchantedBookEnchantLevel, refund_rate));
                 System.out.println("(Cost.CalculateEnchantmentRefund returned" + Cost.CalculateEnchantmentRefund(enchantedBookEnchantLevel, refund_rate));
                 System.out.println("rounded refund = " + refund);
-                player.setLevel(player.getExpToLevel() + refund);
+                player.setLevel(player.getLevel() + refund);
+                System.out.println("Setting player level to " + String.valueOf(player.getLevel() + refund));
             }
         }
 
