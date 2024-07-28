@@ -79,11 +79,11 @@ public final class DragNDropBooks extends JavaPlugin implements Listener {
                 System.out.println("enchantmentCost = " + enchantmentCost);
                 int playerLevel = player.getLevel();
                 System.out.println("playerLevel = " + playerLevel);
-                if (playerLevel > enchantmentCost) {
-                     item.addUnsafeEnchantment(proposedEnchantment, proposedEnchantmentPowerLevel);
-                     bookEnchantmentMetaData.removeStoredEnchant(proposedEnchantment);
+                if (playerLevel >= enchantmentCost) {
                      player.setLevel(playerLevel - enchantmentCost);
                      System.out.println("Setting player level to " + String.valueOf(enchantmentCost - playerLevel));
+                     item.addUnsafeEnchantment(proposedEnchantment, proposedEnchantmentPowerLevel);
+                     bookEnchantmentMetaData.removeStoredEnchant(proposedEnchantment);
                 }
                 else {
                     player.sendMessage(ChatColor.RED + proposedEnchantment.getKey().getKey() + " requires an enchant level of " + String.valueOf(enchantmentCost));
@@ -158,6 +158,13 @@ public final class DragNDropBooks extends JavaPlugin implements Listener {
                 System.out.println("rounded refund = " + refund);
                 player.setLevel(player.getLevel() + refund);
                 System.out.println("Setting player level to " + String.valueOf(player.getLevel() + refund));
+
+                enchantedBookMetaData.addStoredEnchant(proposedEnchantment, proposedEnchantmentPowerLevel, true);
+                enchantedItem.removeEnchantment(proposedEnchantment);
+            }
+            else{
+                enchantedBookMetaData.addStoredEnchant(proposedEnchantment, proposedEnchantmentPowerLevel, true);
+                enchantedItem.removeEnchantment(proposedEnchantment);
             }
         }
 
