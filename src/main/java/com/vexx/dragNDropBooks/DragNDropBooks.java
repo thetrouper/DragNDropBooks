@@ -1,6 +1,7 @@
 package com.vexx.dragNDropBooks;
 
 import com.vexx.dragNDropBooks.Enchants.Enchanter;
+import com.vexx.dragNDropBooks.Utilities.ConfigManager;
 import com.vexx.dragNDropBooks.Utilities.Cost;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -32,7 +33,9 @@ public final class DragNDropBooks extends JavaPlugin implements Listener {
     public void onEnchantedBookUse(InventoryClickEvent e) {
         ItemStack enchantedBook = e.getCursor();
         ItemStack item = e.getCurrentItem();
-        Enchanter enchanter = new Enchanter((Player) e.getWhoClicked(), enchantedBook, item);
+        Player player = (Player) e.getWhoClicked();
+        if(enchantedBook == null || item == null) return;
+        Enchanter enchanter = new Enchanter(player, enchantedBook, item, new ConfigManager(this));
         if(!enchanter.isValidItemStacks()) return;
         enchanter.applyEnchantment();
         e.setCancelled(true);

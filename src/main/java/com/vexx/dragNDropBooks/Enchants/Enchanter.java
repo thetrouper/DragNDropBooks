@@ -9,6 +9,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.EnchantmentStorageMeta;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.checkerframework.checker.units.qual.C;
 
 import java.util.Map;
 
@@ -22,12 +23,13 @@ public class Enchanter {
     private Player player;
 
 
-    public Enchanter(Player player, ItemStack enchantedBook, ItemStack item){
+    public Enchanter(Player player, ItemStack enchantedBook, ItemStack item, ConfigManager config){
         this.item = item;
         this.enchantedBook = enchantedBook;
         this.enchantedBookMeta = (EnchantmentStorageMeta) enchantedBook.getItemMeta();
         this.itemMeta = item.getItemMeta();
         this.player = player;
+        this.config = config;
     }
     public EnchantmentStorageMeta getStoredEnchantedMetaData(){
         return enchantedBookMeta;
