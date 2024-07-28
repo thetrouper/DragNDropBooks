@@ -68,10 +68,10 @@ public final class DragNDropBooks extends JavaPlugin implements Listener {
                 continue;
             }
             if(getConfig().getBoolean("cost_settings.enabled")) {
-                int experienceCostPerLevel = getConfig().getInt("cost_settings.experience_cost_per_level");
+                int playerLevelCostPerEnchantmentLevel = getConfig().getInt("cost_settings.player_level_cost_per_enchant_level");
                 int itemEnchantLevel = itemMeta.getEnchantLevel(proposedEnchantment);
                 int enchantedBookEnchantLevel = proposedEnchantmentPowerLevel;
-                int enchantmentCost = Cost.CalculateEnchantmentCost(enchantedBookEnchantLevel, itemEnchantLevel, experienceCostPerLevel);
+                int enchantmentCost = Cost.CalculateEnchantmentCost(enchantedBookEnchantLevel, itemEnchantLevel, playerLevelCostPerEnchantmentLevel);
                 int playerLevel = player.getLevel();
                 if (playerLevel >= enchantmentCost) {
                      player.setLevel(playerLevel - enchantmentCost);
@@ -141,10 +141,10 @@ public final class DragNDropBooks extends JavaPlugin implements Listener {
             enchantedItem.removeEnchantment(proposedEnchantment);
 
             if(getConfig().getBoolean("cost_settings.enabled")){
-
-                double refund_rate = getConfig().getDouble("cost_settings.experience_cost_per_level");
-                int enchantedBookEnchantLevel = enchantedBookMetaData.getStoredEnchantLevel(proposedEnchantment);
-                int refund = (int) Math.round(Cost.CalculateEnchantmentRefund(enchantedBookEnchantLevel, refund_rate));
+                int playerLevelCostPerEnchantmentLevel = getConfig().getInt("cost_settings.player_level_cost_per_enchant_level");
+                double refundRate = getConfig().getDouble("cost_settings.refund_settings.refund_rate");
+                int powerLevelDifference = proposedEnchantmentPowerLevel - enchantedBookMetaData.getStoredEnchantLevel(proposedEnchantment);
+                int refund = (int) Math.round(Cost.CalculateEnchantmentRefund(powerLevelDifference, playerLevelCostPerEnchantmentLevel, refundRate));
                 player.setLevel(player.getLevel() + refund);
                 enchantedBookMetaData.addStoredEnchant(proposedEnchantment, proposedEnchantmentPowerLevel, true);
                 enchantedItem.removeEnchantment(proposedEnchantment);

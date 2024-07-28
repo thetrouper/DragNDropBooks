@@ -1,6 +1,6 @@
 cost_settings:
   enabled: false
-  experience_cost_per_level: 3
+  player_level_cost_per_enchant_level: 3
   refund_settings:
     refund_rate: 1
 
