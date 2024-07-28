@@ -4,7 +4,6 @@ import com.vexx.dragNDropBooks.DragNDropBooks;
 
 public class Cost {
 
-
     public static int CalculateEnchantmentCost(int enchantedBookPowerLevel, int itemPowerLevel, int experienceCostPerLevel){
         return (enchantedBookPowerLevel - itemPowerLevel) * experienceCostPerLevel;
     }

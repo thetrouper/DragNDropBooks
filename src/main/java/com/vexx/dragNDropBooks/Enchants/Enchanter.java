@@ -1,42 +1,98 @@
 package com.vexx.dragNDropBooks.Enchants;
 
-import com.vexx.dragNDropBooks.DragNDropBooks;
+import com.vexx.dragNDropBooks.Utilities.ConfigManager;
+import com.vexx.dragNDropBooks.Utilities.Cost;
+import net.md_5.bungee.chat.SelectorComponentSerializer;
 import org.bukkit.Material;
+import org.bukkit.enchantments.Enchantment;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.EnchantmentStorageMeta;
 import org.bukkit.inventory.meta.ItemMeta;
 
+import java.util.Map;
+
 public class Enchanter {
 
-    private Boolean cost_settings_enabled;
-    private int player_level_cost_per_enchant_level;
-    private double refund_rate;
+    private ConfigManager config;
     private ItemStack item;
     private ItemStack enchantedBook;
     private EnchantmentStorageMeta enchantedBookMeta;
     private ItemMeta itemMeta;
+    private Player player;
 
 
-    public Enchanter(DragNDropBooks main, ItemStack enchantedBook, ItemStack item){
-        this.cost_settings_enabled = main.getConfig().getBoolean("cost_settings.enabled");
-        this.player_level_cost_per_enchant_level = main.getConfig().getInt("cost_settings.player_level_cost_per_enchant_level");
-        this.refund_rate = main.getConfig().getDouble("cost_settings.refund_settings.refund_rate");
+    public Enchanter(Player player, ItemStack enchantedBook, ItemStack item){
         this.item = item;
         this.enchantedBook = enchantedBook;
         this.enchantedBookMeta = (EnchantmentStorageMeta) enchantedBook.getItemMeta();
         this.itemMeta = item.getItemMeta();
+        this.player = player;
+    }
+    public EnchantmentStorageMeta getStoredEnchantedMetaData(){
+        return enchantedBookMeta;
+    }
+
+    public ItemStack getItem(){
+        return item;
+    }
+
+    public ItemStack getEnchantedBook(){
+        return enchantedBook;
+    }
+
+    public boolean isValidItemStacks(){
+        if(item == null || enchantedBook == null) return false;
+        if(enchantedBook.getType() != Material.ENCHANTED_BOOK) return false;
+        if(item.getAmount() != 1 || enchantedBook.getAmount() != 1) return false;
+        return enchantedBookMeta.hasStoredEnchants();
+    }
+
+    private boolean isValidEnchantment(Enchantment bookEnchantment, Integer bookPowerLevel){
+        if(itemMeta.hasEnchant(bookEnchantment) && bookPowerLevel <= itemMeta.getEnchantLevel(bookEnchantment))
+            return false;
+        return bookEnchantment.canEnchantItem(item);
+    }
+
+    private int calculateEnchantmentCost(Enchantment bookEnchantment, Integer bookPowerLevel){
+        if(!config.cost_settings_enabled) return 0;
+        int itemPowerLevel = 0;
+        int playerLevel = player.getLevel();
+        if(itemMeta.hasEnchant(bookEnchantment))
+            itemPowerLevel += itemMeta.getEnchantLevel(bookEnchantment);
+        return (bookPowerLevel - itemPowerLevel) * config.player_level_cost_per_enchant_level;
+    }
+
+    private boolean canAffordEnchantmentCost(Enchantment bookEnchantment, Integer bookPowerLevel){
+        int enchantmentCost = calculateEnchantmentCost(bookEnchantment, bookPowerLevel);
+        int playerLevel = player.getLevel();
+        return playerLevel >= enchantmentCost;
+    }
+
+    private void applyEnchantmentCost(Enchantment bookEnchantment, Integer bookPowerLevel){
+        int playerLevel = player.getLevel();
+        int enchantmentCost = 0;
+        player.setLevel(playerLevel - calculateEnchantmentCost(bookEnchantment, bookPowerLevel));
+    }
+
+    public void applyEnchantment() {
+        Map<Enchantment, Integer> enchantments = enchantedBookMeta.getStoredEnchants();
+        for(Map.Entry<Enchantment, Integer> enchant : enchantments.entrySet()){
+            Enchantment bookEnchant = enchant.getKey();
+            Integer bookPowerLevel = enchant.getValue();
+            if(isValidEnchantment(bookEnchant, bookPowerLevel) &&
+            canAffordEnchantmentCost(bookEnchant, bookPowerLevel))
+            {
+                item.addUnsafeEnchantment(bookEnchant, bookPowerLevel);
+                enchantedBookMeta.removeStoredEnchant(bookEnchant);
+                enchantedBook.setItemMeta(enchantedBookMeta);
+                applyEnchantmentCost(bookEnchant, bookPowerLevel);
+            }
+        }
+        if(!enchantedBookMeta.hasStoredEnchants()){
+            enchantedBook.setType(Material.BOOK);
+        }
 
     }
 
-    public Boolean AreValidItemStacks(){
-        if(item == null || enchantedBook == null)
-            return false;
-        if(enchantedBook.getType() != Material.ENCHANTED_BOOK)
-            return false;
-        if(item.getType().isAir())
-            return false;
-        if(item.getAmount() != 1 || enchantedBook.getAmount() != 1)
-            return false;
-        return true;
-    }
 }

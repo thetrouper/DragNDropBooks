@@ -1,5 +1,6 @@
 package com.vexx.dragNDropBooks;
 
+import com.vexx.dragNDropBooks.Enchants.Enchanter;
 import com.vexx.dragNDropBooks.Utilities.Cost;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -31,71 +32,11 @@ public final class DragNDropBooks extends JavaPlugin implements Listener {
     public void onEnchantedBookUse(InventoryClickEvent e) {
         ItemStack enchantedBook = e.getCursor();
         ItemStack item = e.getCurrentItem();
-
-        if(enchantedBook == null ||
-                item == null ||
-                enchantedBook.getType() != Material.ENCHANTED_BOOK ||
-                item.getType().isAir() ||
-                enchantedBook.getType().isAir() ||
-                enchantedBook.getAmount() > 1) {
-            return;
-        }
-
-        EnchantmentStorageMeta bookEnchantmentMetaData = (EnchantmentStorageMeta) enchantedBook.getItemMeta();
-
-        if (!bookEnchantmentMetaData.hasStoredEnchants()) return;
-
-        Player player = (Player) e.getWhoClicked();
-        Map<Enchantment, Integer> bookEnchantments = bookEnchantmentMetaData.getStoredEnchants();
-        ItemMeta itemMeta = item.getItemMeta();
-
-        for(Map.Entry<Enchantment, Integer> entry : bookEnchantments.entrySet()){
-            Enchantment proposedEnchantment = entry.getKey();
-            Integer proposedEnchantmentPowerLevel = entry.getValue();
-
-            if(itemMeta.hasEnchant(proposedEnchantment) &&
-                    proposedEnchantmentPowerLevel <= itemMeta.getEnchantLevel(proposedEnchantment)) {
-                player.sendMessage(ChatColor.RED + "Item's current enchant (" + proposedEnchantment.getKey().getKey()
-                        + ", Level " + itemMeta.getEnchantLevel(proposedEnchantment)
-                        + ") contains higher or equal power level than enchanted book.");
-                continue;
-            }
-
-            if(!proposedEnchantment.canEnchantItem(item)) {
-                player.sendMessage(ChatColor.RED + "Cannot apply enchant ("
-                        + proposedEnchantment.getKey().getKey() + ", Level " + proposedEnchantmentPowerLevel
-                        + ") to this item type.");
-                continue;
-            }
-            if(getConfig().getBoolean("cost_settings.enabled")) {
-                int playerLevelCostPerEnchantmentLevel = getConfig().getInt("cost_settings.player_level_cost_per_enchant_level");
-                int itemEnchantLevel = itemMeta.getEnchantLevel(proposedEnchantment);
-                int enchantedBookEnchantLevel = proposedEnchantmentPowerLevel;
-                int enchantmentCost = Cost.CalculateEnchantmentCost(enchantedBookEnchantLevel, itemEnchantLevel, playerLevelCostPerEnchantmentLevel);
-                int playerLevel = player.getLevel();
-                if (playerLevel >= enchantmentCost) {
-                     player.setLevel(playerLevel - enchantmentCost);
-                     item.addUnsafeEnchantment(proposedEnchantment, proposedEnchantmentPowerLevel);
-                     bookEnchantmentMetaData.removeStoredEnchant(proposedEnchantment);
-                }
-                else {
-                    player.sendMessage(ChatColor.RED + proposedEnchantment.getKey().getKey() + " requires an enchant level of " + String.valueOf(enchantmentCost));
-                }
-            }
-            else
-            {
-                item.addUnsafeEnchantment(proposedEnchantment, proposedEnchantmentPowerLevel);
-                bookEnchantmentMetaData.removeStoredEnchant(proposedEnchantment);
-            }
-        }
-
-        if(!bookEnchantmentMetaData.hasStoredEnchants()) {
-            enchantedBook.setType(Material.BOOK);
-        }
-
-        enchantedBook.setItemMeta(bookEnchantmentMetaData);
+        Enchanter enchanter = new Enchanter((Player) e.getWhoClicked(), enchantedBook, item);
+        if(!enchanter.isValidItemStacks()) return;
+        enchanter.applyEnchantment();
         e.setCancelled(true);
-        e.setCurrentItem(item);
+        e.setCurrentItem(enchanter.getItem());
     }
 
     @EventHandler
