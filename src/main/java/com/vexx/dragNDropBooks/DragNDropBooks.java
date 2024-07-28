@@ -137,9 +137,6 @@ public final class DragNDropBooks extends JavaPlugin implements Listener {
                 continue;
             }
 
-            enchantedBookMetaData.addStoredEnchant(proposedEnchantment, proposedEnchantmentPowerLevel, true);
-            enchantedItem.removeEnchantment(proposedEnchantment);
-
             if(getConfig().getBoolean("cost_settings.enabled")){
                 int playerLevelCostPerEnchantmentLevel = getConfig().getInt("cost_settings.player_level_cost_per_enchant_level");
                 double refundRate = getConfig().getDouble("cost_settings.refund_settings.refund_rate");

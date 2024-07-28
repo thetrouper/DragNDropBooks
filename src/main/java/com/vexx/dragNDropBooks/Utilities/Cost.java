@@ -13,6 +13,6 @@ public class Cost {
         System.out.println("enchantedItemPowerLevel: " + enchantedItemPowerLevel);
         System.out.println("playerLevelCostPerEnchantmentLevel: " + playerLevelCostPerEnchantmentLevel);
         System.out.println("refund: " + enchantedItemPowerLevel * refundRate);
-        return enchantedItemPowerLevel * refundRate;
+        return enchantedItemPowerLevel * refundRate * playerLevelCostPerEnchantmentLevel;
     }
 }
