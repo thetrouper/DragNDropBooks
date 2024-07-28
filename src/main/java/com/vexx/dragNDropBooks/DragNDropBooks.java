@@ -1,5 +1,6 @@
 package com.vexx.dragNDropBooks;
 
+import com.vexx.dragNDropBooks.Utilities.Cost;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -66,9 +67,33 @@ public final class DragNDropBooks extends JavaPlugin implements Listener {
                         + ") to this item type.");
                 continue;
             }
-
-            item.addUnsafeEnchantment(proposedEnchantment, proposedEnchantmentPowerLevel);
-            bookEnchantmentMetaData.removeStoredEnchant(proposedEnchantment);
+            if(getConfig().getBoolean("cost_settings.enabled")) {
+                System.out.println("cost_settings.enabled = true");
+                int experienceCostPerLevel = getConfig().getInt("cost_settings.experience_cost_per_level");
+                System.out.println("experience_cost_per_level = " + experienceCostPerLevel);
+                int itemEnchantLevel = itemMeta.getEnchantLevel(proposedEnchantment);
+                System.out.println("itemEnchantLevel = " + itemEnchantLevel);
+                int enchantedBookEnchantLevel = proposedEnchantmentPowerLevel;
+                System.out.println("enchantedBookEnchantLevel = " + enchantedBookEnchantLevel);
+                int enchantmentCost = Cost.CalculateEnchantmentCost(enchantedBookEnchantLevel, itemEnchantLevel, experienceCostPerLevel);
+                System.out.println("enchantmentCost = " + enchantmentCost);
+                int playerLevel = player.getExpToLevel();
+                System.out.println("playerLevel = " + playerLevel);
+                if (playerLevel > enchantmentCost) {
+                     item.addUnsafeEnchantment(proposedEnchantment, proposedEnchantmentPowerLevel);
+                     bookEnchantmentMetaData.removeStoredEnchant(proposedEnchantment);
+                     player.setLevel(enchantmentCost - playerLevel);
+                     System.out.println("Setting player level to " + String.valueOf(enchantmentCost - playerLevel));
+                }
+                else {
+                    player.sendMessage(ChatColor.RED + proposedEnchantment.getKey().getKey() + " requires an enchant level of " + String.valueOf(enchantmentCost));
+                }
+            }
+            else
+            {
+                item.addUnsafeEnchantment(proposedEnchantment, proposedEnchantmentPowerLevel);
+                bookEnchantmentMetaData.removeStoredEnchant(proposedEnchantment);
+            }
         }
 
         if(!bookEnchantmentMetaData.hasStoredEnchants()) {
@@ -121,6 +146,18 @@ public final class DragNDropBooks extends JavaPlugin implements Listener {
 
             enchantedBookMetaData.addStoredEnchant(proposedEnchantment, proposedEnchantmentPowerLevel, true);
             enchantedItem.removeEnchantment(proposedEnchantment);
+
+            if(getConfig().getBoolean("cost_settings.enabled")){
+                System.out.println("cost_settings.enabled = true");
+                double refund_rate = getConfig().getDouble("cost_settings.experience_cost_per_level");
+                System.out.println("refund_rate = " + refund_rate);
+                int enchantedBookEnchantLevel = enchantedBookMetaData.getStoredEnchantLevel(proposedEnchantment);
+                System.out.println("enchantedBookEnchantLevel = " + enchantedBookEnchantLevel);
+                int refund = (int) Math.round(Cost.CalculateEnchantmentRefund(enchantedBookEnchantLevel, refund_rate));
+                System.out.println("(Cost.CalculateEnchantmentRefund returned" + Cost.CalculateEnchantmentRefund(enchantedBookEnchantLevel, refund_rate));
+                System.out.println("rounded refund = " + refund);
+                player.setLevel(player.getExpToLevel() + refund);
+            }
         }
 
         e.setCancelled(true);

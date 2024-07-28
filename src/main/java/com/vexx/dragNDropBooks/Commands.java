@@ -20,6 +20,7 @@ public class Commands implements CommandExecutor {
         if (commandSender instanceof Player player) {
             if (args[0].equals("enable")  && args[1].equals("cost")) {
                 main.getConfig().addDefault("cost_settings.enabled", true);
+                main.saveDefaultConfig();
                 player.sendMessage(ChatColor.GREEN + "costs have been enabled.");
             }
         }
@@ -27,6 +28,7 @@ public class Commands implements CommandExecutor {
         if (commandSender instanceof Player player) {
             if (args[0].equals("disable")  && args[1].equals("cost")) {
                 main.getConfig().addDefault("cost_settings.enabled", false);
+                main.saveDefaultConfig();
                 player.sendMessage(ChatColor.RED + "costs have been disabled.");
             }
         }

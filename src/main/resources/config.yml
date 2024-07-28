@@ -1,6 +1,6 @@
 cost_settings:
   enabled: false
-  experience_level_per_level: 3
+  experience_cost_per_level: 3
   refund_settings:
     refund_rate: 1
 
