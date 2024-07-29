@@ -1,1 +1,3 @@
-com\vexx\dragNDropBooks\DragNDropBooks.class
+com\vexx\dragNDropBooks\Utilities\Formatter.class
+com\vexx\dragNDropBooks\Enchants\Disenchanter.class
+com\vexx\dragNDropBooks\Utilities\ConfigManager.class

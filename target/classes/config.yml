@@ -1,0 +1,16 @@
+# set enabled to be true to enable cost settings
+
+# player_level_cost_per_enchant_level is the amount of levels a player must pay
+# in order to apply an enchant. Using the default value of 3, efficiency 5 costs 15 levels to apply.
+# This calculation considers already applied enchants. If a player has Efficency 3 and applies efficency 5, using
+# the default settings it will be a cost of six, 2 power levels * 3
+
+# refund_rate is the rate the player will be refunded upon removing an enchant onto a book.
+# If the book already has the same type of enchant, the player will be refunded the difference of
+# (items_enchant_level - books_enchant_level) * player_level_cost_per_enchant_level * refund_rate
+cost_settings:
+  enabled: false
+  player_level_cost_per_enchant_level: 3
+  refund_settings:
+    refund_rate: 1
+
