@@ -35,7 +35,13 @@ public final class DragNDropBooks extends JavaPlugin implements Listener {
         ItemStack enchantedBook = e.getCursor();
         ItemStack item = e.getCurrentItem();
         Player player = (Player) e.getWhoClicked();
-        if(enchantedBook == null || item == null) return;
+        if(enchantedBook == null
+          || item == null
+          || enchantedBook.getType().isAir()
+          || item.getType().isAir()
+          || enchantedBook.getType() != Material.ENCHANTED_BOOK) return;
+        System.out.println("enchantedBook: " + enchantedBook);
+        System.out.println("item: " + item);
         Enchanter enchanter = new Enchanter(player, enchantedBook, item, new ConfigManager(this));
         if(!enchanter.isValidItemStacks()) return;
         enchanter.applyEnchantment();
@@ -48,7 +54,10 @@ public final class DragNDropBooks extends JavaPlugin implements Listener {
         ItemStack book = e.getCurrentItem();
         ItemStack enchantedItem = e.getCursor();
         Player player = (Player) e.getWhoClicked();
-        if(book == null || enchantedItem == null) return;
+        if(book == null || enchantedItem == null || book.getType().isAir() || enchantedItem.getType().isAir()
+                || (book.getType() != Material.ENCHANTED_BOOK && book.getType() != Material.BOOK)) return;
+        System.out.println("book: " + book);
+        System.out.println("enchantedItem: " + enchantedItem);;
         if(!(enchantedItem.getItemMeta() instanceof EnchantmentStorageMeta)) return;
         Disenchanter disenchanter = new Disenchanter(player, book, enchantedItem, new ConfigManager(this));
         if(!disenchanter.isValidItemStacks()) return;

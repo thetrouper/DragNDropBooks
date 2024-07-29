@@ -18,9 +18,7 @@ public class Disenchanter {
 
     public Disenchanter(Player player, ItemStack book, ItemStack enchantedItem, ConfigManager config){
         this.enchantedItem = enchantedItem;
-        System.out.println("item: " + enchantedItem.getType().toString());
         this.book = book;
-        System.out.println("enchantedBook: " + book.getType().toString());
         this.player = player;
         this.config = config;
 
@@ -37,7 +35,7 @@ public class Disenchanter {
 
     public boolean isValidItemStacks(){
         if(enchantedItem == null || book == null) return false;
-        if(book.getType() != Material.ENCHANTED_BOOK || book.getType() != Material.BOOK) return false;
+        if(book.getType() != Material.ENCHANTED_BOOK && book.getType() != Material.BOOK) return false;
         if(enchantedItem.getAmount() != validStackSize || book.getAmount() != validStackSize) return false;
         return !enchantedItem.getEnchantments().isEmpty();
     }
