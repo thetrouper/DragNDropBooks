@@ -15,7 +15,6 @@ public class Disenchanter {
     private ItemStack item;
     private ItemStack enchantedBook;
     private EnchantmentStorageMeta enchantedBookMeta;
-    private ItemMeta itemMeta;
     private final Player player;
     private final int validStackSize = 1;
 
@@ -23,7 +22,6 @@ public class Disenchanter {
         this.item = item;
         this.enchantedBook = enchantedBook;
         this.enchantedBookMeta = (EnchantmentStorageMeta) enchantedBook.getItemMeta();
-        this.itemMeta = item.getItemMeta();
         this.player = player;
         this.config = config;
     }
