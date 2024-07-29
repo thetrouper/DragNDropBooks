@@ -22,7 +22,6 @@ public class Enchanter {
     private ItemMeta itemMeta;
     private Player player;
 
-
     public Enchanter(Player player, ItemStack enchantedBook, ItemStack item, ConfigManager config){
         this.item = item;
         this.enchantedBook = enchantedBook;
@@ -31,16 +30,8 @@ public class Enchanter {
         this.player = player;
         this.config = config;
     }
-    public EnchantmentStorageMeta getStoredEnchantedMetaData(){
-        return enchantedBookMeta;
-    }
-
     public ItemStack getItem(){
         return item;
-    }
-
-    public ItemStack getEnchantedBook(){
-        return enchantedBook;
     }
 
     public boolean isValidItemStacks(){
@@ -73,7 +64,6 @@ public class Enchanter {
 
     private void applyEnchantmentCost(Enchantment bookEnchantment, Integer bookPowerLevel){
         int playerLevel = player.getLevel();
-        int enchantmentCost = 0;
         player.setLevel(playerLevel - calculateEnchantmentCost(bookEnchantment, bookPowerLevel));
     }
 

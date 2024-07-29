@@ -1,5 +1,6 @@
 package com.vexx.dragNDropBooks;
 
+import com.vexx.dragNDropBooks.Enchants.Disenchanter;
 import com.vexx.dragNDropBooks.Enchants.Enchanter;
 import com.vexx.dragNDropBooks.Utilities.ConfigManager;
 import com.vexx.dragNDropBooks.Utilities.Cost;
@@ -46,58 +47,12 @@ public final class DragNDropBooks extends JavaPlugin implements Listener {
     public void onEnchantedItemUse(InventoryClickEvent e) {
         ItemStack book = e.getCurrentItem();
         ItemStack enchantedItem = e.getCursor();
-
-        if(book == null ||
-                enchantedItem == null ||
-                book.getType().isAir() ||
-                book.getType() != Material.BOOK && book.getType() != Material.ENCHANTED_BOOK ||
-                book.getAmount() > 1) {
-            return;
-        }
-
-        ItemMeta enchantedItemMetaData = enchantedItem.getItemMeta();
-        if(enchantedItemMetaData == null ||
-                !enchantedItemMetaData.hasEnchants()) {
-            return;
-        }
-
-        if(book.getType() == Material.BOOK) {
-            book.setType(Material.ENCHANTED_BOOK);
-        }
-
         Player player = (Player) e.getWhoClicked();
-        Map<Enchantment, Integer> itemEnchantments = enchantedItem.getEnchantments();
-        EnchantmentStorageMeta enchantedBookMetaData = (EnchantmentStorageMeta)book.getItemMeta();
-
-        for(Map.Entry<Enchantment, Integer> entry : itemEnchantments.entrySet()){
-            Enchantment proposedEnchantment = entry.getKey();
-            Integer proposedEnchantmentPowerLevel = entry.getValue();
-
-            if(enchantedBookMetaData.hasStoredEnchant(proposedEnchantment) &&
-                    proposedEnchantmentPowerLevel <= enchantedBookMetaData.getStoredEnchantLevel(proposedEnchantment)) {
-                player.sendMessage(ChatColor.RED + "Book's current enchant (" + proposedEnchantment.getKey().getKey()
-                        + ", Level " + enchantedBookMetaData.getStoredEnchantLevel(proposedEnchantment)
-                        + ") contains higher or equal power level than enchanted item.");
-                continue;
-            }
-
-            if(getConfig().getBoolean("cost_settings.enabled")){
-                int playerLevelCostPerEnchantmentLevel = getConfig().getInt("cost_settings.player_level_cost_per_enchant_level");
-                double refundRate = getConfig().getDouble("cost_settings.refund_settings.refund_rate");
-                int powerLevelDifference = proposedEnchantmentPowerLevel - enchantedBookMetaData.getStoredEnchantLevel(proposedEnchantment);
-                int refund = (int) Math.round(Cost.CalculateEnchantmentRefund(powerLevelDifference, playerLevelCostPerEnchantmentLevel, refundRate));
-                player.setLevel(player.getLevel() + refund);
-                enchantedBookMetaData.addStoredEnchant(proposedEnchantment, proposedEnchantmentPowerLevel, true);
-                enchantedItem.removeEnchantment(proposedEnchantment);
-            }
-            else{
-                enchantedBookMetaData.addStoredEnchant(proposedEnchantment, proposedEnchantmentPowerLevel, true);
-                enchantedItem.removeEnchantment(proposedEnchantment);
-            }
-        }
-
+        if(book == null || enchantedItem == null) return;
+        Disenchanter disenchanter = new Disenchanter(player, book, enchantedItem, new ConfigManager(this));
+        if(!disenchanter.isValidItemStacks()) return;
+        disenchanter.RemoveEnchantment();
         e.setCancelled(true);
-        book.setItemMeta(enchantedBookMetaData);
-        e.setCurrentItem(book);
+        e.setCurrentItem(disenchanter.getEnchantedBook());
     }
 }
