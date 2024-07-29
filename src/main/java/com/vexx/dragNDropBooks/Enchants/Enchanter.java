@@ -67,8 +67,9 @@ public class Enchanter {
 
     private void cannotAffordEnchantmentCostMessage(Enchantment bookEnchantment, Integer bookPowerLevel){
         player.sendMessage(ChatColor.GOLD + Formatter.getFormattedEnchant(bookEnchantment) + " "
-                + Formatter.toRoman(bookPowerLevel) + ChatColor.RED + " costs "
-                + calculateEnchantmentCost(bookEnchantment, bookPowerLevel) + " experience levels");
+                + Formatter.toRoman(bookPowerLevel) + ChatColor.RED + " costs " + ChatColor.GOLD +
+                + calculateEnchantmentCost(bookEnchantment, bookPowerLevel) 
+                + ChatColor.RED + " experience levels");
     }
 
     private void invalidEnchantmentMessage(Enchantment bookEnchantment, Integer bookPowerLevel){

@@ -1,11 +1,13 @@
 package com.vexx.dragNDropBooks.Enchants;
 
 import com.vexx.dragNDropBooks.Utilities.ConfigManager;
+import com.vexx.dragNDropBooks.Utilities.Formatter;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.EnchantmentStorageMeta;
+import org.bukkit.ChatColor;
 import java.util.Map;
 
 public class Disenchanter {
@@ -43,7 +45,7 @@ public class Disenchanter {
     }
 
     private boolean isValidEnchantment(Enchantment itemEnchantment, Integer itemPowerLevel){
-        return !enchantedBookMeta.hasEnchant(itemEnchantment) || itemPowerLevel > enchantedBookMeta.getEnchantLevel(itemEnchantment);
+        return !enchantedBookMeta.hasEnchant(itemEnchantment) || itemPowerLevel >= enchantedBookMeta.getEnchantLevel(itemEnchantment);
     }
 
     private int calculateEnchantmentRefund(Enchantment itemEnchantment, Integer itemPowerLevel){
@@ -51,11 +53,27 @@ public class Disenchanter {
         int enchantmentPowerLevel = 0;
         if(enchantedBookMeta.hasEnchant(itemEnchantment))
             enchantmentPowerLevel += enchantedBookMeta.getEnchantLevel(itemEnchantment);
-        return (int) Math.round((itemPowerLevel - enchantmentPowerLevel) * config.player_level_cost_per_enchant_level * config.refund_rate);
+        return (int) Math.round((itemPowerLevel - enchantmentPowerLevel)
+                * config.player_level_cost_per_enchant_level * config.refund_rate);
     }
 
     private void applyEnchantmentRefund(Enchantment itemEnchantment, Integer itemPowerLevel){
         player.setLevel(player.getLevel() + calculateEnchantmentRefund(itemEnchantment, itemPowerLevel));
+        sendApplyEnchantRefundMessage(itemEnchantment, itemPowerLevel);
+    }
+
+    private void sendInvalidEnchantmentMessage(Enchantment itemEnchantment, Integer itemPowerLevel){
+        player.sendMessage(ChatColor.RED + "You already have a higher level of "
+                + ChatColor.GOLD + Formatter.getFormattedEnchant(itemEnchantment) + ChatColor.RED
+                + " on your book.");
+
+    }
+
+    private void sendApplyEnchantRefundMessage(Enchantment itemEnchantment, Integer itemPowerLevel){
+        int playerRefund = calculateEnchantmentRefund(itemEnchantment, itemPowerLevel);
+        player.sendMessage(ChatColor.GREEN + "Refunded "
+            + ChatColor.GOLD + playerRefund
+            + ChatColor.GREEN + " of levels worth of experience points.");
     }
 
     public void RemoveEnchantment() {
@@ -69,6 +87,10 @@ public class Disenchanter {
                 enchantedItem.removeEnchantment(itemEnchant);
                 book.setItemMeta(enchantedBookMeta);
                 applyEnchantmentRefund(itemEnchant, itemPowerLevel);
+            }
+            else
+            {
+                sendInvalidEnchantmentMessage(itemEnchant, itemPowerLevel);
             }
         }
         if(!enchantedBookMeta.hasStoredEnchants()){

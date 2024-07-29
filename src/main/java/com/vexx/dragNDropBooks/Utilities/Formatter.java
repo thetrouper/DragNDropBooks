@@ -2,7 +2,7 @@ package com.vexx.dragNDropBooks.Utilities;
 
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
+
 
 import java.util.TreeMap;
 
@@ -44,10 +44,10 @@ public class Formatter {
     public static String getFormattedItem(ItemStack item){
         String name = item.getType().name().toLowerCase();
         String[] nameSplit = name.split("_");
-        String formattedName = "";
+        StringBuilder formattedName = new StringBuilder();
         for(String s : nameSplit){
-            formattedName.concat(s.substring(0, 1).toUpperCase() + s.substring(1) + " ");
+            formattedName.append(s.substring(0, 1).toUpperCase()).append(s.substring(1)).append(" ");
         }
-        return formattedName.trim();
+        return formattedName.toString().trim();
     }
 }
