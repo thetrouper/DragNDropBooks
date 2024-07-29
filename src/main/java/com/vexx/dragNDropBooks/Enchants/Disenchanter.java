@@ -9,30 +9,37 @@ import org.bukkit.inventory.meta.EnchantmentStorageMeta;
 import java.util.Map;
 
 public class Disenchanter {
-    private final ConfigManager config;
-    private ItemStack item;
-    private ItemStack enchantedBook;
+    private ConfigManager config;
+    private ItemStack enchantedItem;
+    private ItemStack book;
     private EnchantmentStorageMeta enchantedBookMeta;
-    private final Player player;
+    private Player player;
     private final int validStackSize = 1;
 
-    public Disenchanter(Player player, ItemStack enchantedBook, ItemStack item, ConfigManager config){
-        this.item = item;
-        this.enchantedBook = enchantedBook;
-        this.enchantedBookMeta = (EnchantmentStorageMeta) enchantedBook.getItemMeta();
+    public Disenchanter(Player player, ItemStack book, ItemStack enchantedItem, ConfigManager config){
+        this.enchantedItem = enchantedItem;
+        System.out.println("item: " + enchantedItem.getType().toString());
+        this.book = book;
+        System.out.println("enchantedBook: " + book.getType().toString());
         this.player = player;
         this.config = config;
+
+        book.setType(Material.ENCHANTED_BOOK);
+        System.out.println("setting enchantedBook to " + book.getType().toString());
+        if(book.getItemMeta() instanceof EnchantmentStorageMeta){
+            this.enchantedBookMeta = (EnchantmentStorageMeta) book.getItemMeta();
+        }
     }
 
     public ItemStack getEnchantedBook() {
-        return enchantedBook;
+        return book;
     }
 
     public boolean isValidItemStacks(){
-        if(item == null || enchantedBook == null) return false;
-        if(enchantedBook.getType() != Material.ENCHANTED_BOOK || enchantedBook.getType() != Material.BOOK) return false;
-        if(item.getAmount() != validStackSize || enchantedBook.getAmount() != validStackSize) return false;
-        return !item.getEnchantments().isEmpty();
+        if(enchantedItem == null || book == null) return false;
+        if(book.getType() != Material.ENCHANTED_BOOK || book.getType() != Material.BOOK) return false;
+        if(enchantedItem.getAmount() != validStackSize || book.getAmount() != validStackSize) return false;
+        return !enchantedItem.getEnchantments().isEmpty();
     }
 
     private boolean isValidEnchantment(Enchantment itemEnchantment, Integer itemPowerLevel){
@@ -52,20 +59,20 @@ public class Disenchanter {
     }
 
     public void RemoveEnchantment() {
-        Map<Enchantment, Integer> enchantments = item.getEnchantments();
+        Map<Enchantment, Integer> enchantments = enchantedItem.getEnchantments();
         for(Map.Entry<Enchantment, Integer> enchant : enchantments.entrySet()){
             Enchantment itemEnchant = enchant.getKey();
             Integer itemPowerLevel = enchant.getValue();
             if(isValidEnchantment(itemEnchant, itemPowerLevel))
             {
                 enchantedBookMeta.addStoredEnchant(itemEnchant, itemPowerLevel, true);
-                item.removeEnchantment(itemEnchant);
-                enchantedBook.setItemMeta(enchantedBookMeta);
+                enchantedItem.removeEnchantment(itemEnchant);
+                book.setItemMeta(enchantedBookMeta);
                 applyEnchantmentRefund(itemEnchant, itemPowerLevel);
             }
         }
-        if(enchantedBookMeta.hasStoredEnchants()){
-            enchantedBook.setType(Material.ENCHANTED_BOOK);
+        if(!enchantedBookMeta.hasStoredEnchants()){
+            book.setType(Material.BOOK);
         }
 
     }

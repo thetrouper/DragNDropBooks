@@ -4,13 +4,14 @@ import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 
 public class Commands implements CommandExecutor {
 
-    com.vexx.dragNDropBooks.main main;
+    DragNDropBooks main;
 
-    public Commands(com.vexx.dragNDropBooks.main main) {
+    public Commands(DragNDropBooks main) {
         this.main = main;
     }
 

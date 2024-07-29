@@ -11,12 +11,12 @@ import java.util.Map;
 
 public class Enchanter {
 
-    private ConfigManager config;
-    private ItemStack item;
-    private ItemStack enchantedBook;
-    private EnchantmentStorageMeta enchantedBookMeta;
-    private ItemMeta itemMeta;
-    private Player player;
+    private final ConfigManager config;
+    private final ItemStack item;
+    private final ItemStack enchantedBook;
+    private final EnchantmentStorageMeta enchantedBookMeta;
+    private final ItemMeta itemMeta;
+    private final Player player;
 
     public Enchanter(Player player, ItemStack enchantedBook, ItemStack item, ConfigManager config){
         this.item = item;
