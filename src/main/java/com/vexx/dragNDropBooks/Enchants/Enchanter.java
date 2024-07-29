@@ -1,16 +1,12 @@
 package com.vexx.dragNDropBooks.Enchants;
 
 import com.vexx.dragNDropBooks.Utilities.ConfigManager;
-import com.vexx.dragNDropBooks.Utilities.Cost;
-import net.md_5.bungee.chat.SelectorComponentSerializer;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.EnchantmentStorageMeta;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.checkerframework.checker.units.qual.C;
-
 import java.util.Map;
 
 public class Enchanter {
