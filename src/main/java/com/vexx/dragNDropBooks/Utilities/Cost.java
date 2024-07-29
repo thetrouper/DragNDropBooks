@@ -1,7 +1,5 @@
 package com.vexx.dragNDropBooks.Utilities;
 
-import com.vexx.dragNDropBooks.DragNDropBooks;
-
 public class Cost {
 
     public static int CalculateEnchantmentCost(int enchantedBookPowerLevel, int itemPowerLevel, int experienceCostPerLevel){
