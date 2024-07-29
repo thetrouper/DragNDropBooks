@@ -23,10 +23,12 @@ public class Disenchanter {
         this.config = config;
 
         book.setType(Material.ENCHANTED_BOOK);
-        System.out.println("setting enchantedBook to " + book.getType().toString());
         if(book.getItemMeta() instanceof EnchantmentStorageMeta){
             this.enchantedBookMeta = (EnchantmentStorageMeta) book.getItemMeta();
         }
+        System.out.println("Disenchanter initiated.");
+        System.out.printf("Disenchanter.init: enchantedItem = %s", enchantedItem);
+        System.out.printf("Disenchanter.init: book = %s", book);
     }
 
     public ItemStack getEnchantedBook() {

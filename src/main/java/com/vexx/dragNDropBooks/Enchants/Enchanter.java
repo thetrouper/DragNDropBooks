@@ -1,6 +1,8 @@
 package com.vexx.dragNDropBooks.Enchants;
 
 import com.vexx.dragNDropBooks.Utilities.ConfigManager;
+import com.vexx.dragNDropBooks.Utilities.Formatter;
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
@@ -63,18 +65,44 @@ public class Enchanter {
         player.setLevel(playerLevel - calculateEnchantmentCost(bookEnchantment, bookPowerLevel));
     }
 
+    private void cannotAffordEnchantmentCostMessage(Enchantment bookEnchantment, Integer bookPowerLevel){
+        player.sendMessage(ChatColor.GOLD + Formatter.getFormattedEnchant(bookEnchantment) + " "
+                + Formatter.toRoman(bookPowerLevel) + ChatColor.RED + " costs "
+                + calculateEnchantmentCost(bookEnchantment, bookPowerLevel) + " experience levels");
+    }
+
+    private void invalidEnchantmentMessage(Enchantment bookEnchantment, Integer bookPowerLevel){
+        if(itemMeta.hasEnchant(bookEnchantment) && bookPowerLevel <= itemMeta.getEnchantLevel(bookEnchantment)){
+            player.sendMessage(ChatColor.RED + "You already have a higher level of "
+                    + ChatColor.GOLD + Formatter.getFormattedEnchant(bookEnchantment) + ChatColor.RED
+                    + " on your item.");
+        }
+        if(!bookEnchantment.canEnchantItem(item)){
+            player.sendMessage(ChatColor.RED + "Unable to apply " + ChatColor.GOLD
+                    + Formatter.getFormattedEnchant(bookEnchantment) + " " + Formatter.toRoman(bookPowerLevel)
+                    + ChatColor.RED + " to " + ChatColor.GOLD + Formatter.getFormattedItem(item) + ".");
+        }
+    }
+
     public void applyEnchantment() {
         Map<Enchantment, Integer> enchantments = enchantedBookMeta.getStoredEnchants();
         for(Map.Entry<Enchantment, Integer> enchant : enchantments.entrySet()){
             Enchantment bookEnchant = enchant.getKey();
             Integer bookPowerLevel = enchant.getValue();
-            if(isValidEnchantment(bookEnchant, bookPowerLevel) &&
-            canAffordEnchantmentCost(bookEnchant, bookPowerLevel))
+            if(isValidEnchantment(bookEnchant, bookPowerLevel))
             {
-                item.addUnsafeEnchantment(bookEnchant, bookPowerLevel);
-                enchantedBookMeta.removeStoredEnchant(bookEnchant);
-                enchantedBook.setItemMeta(enchantedBookMeta);
-                applyEnchantmentCost(bookEnchant, bookPowerLevel);
+                if(canAffordEnchantmentCost(bookEnchant, bookPowerLevel)){
+                    item.addUnsafeEnchantment(bookEnchant, bookPowerLevel);
+                    enchantedBookMeta.removeStoredEnchant(bookEnchant);
+                    enchantedBook.setItemMeta(enchantedBookMeta);
+                    applyEnchantmentCost(bookEnchant, bookPowerLevel);
+                }
+                else{
+                    cannotAffordEnchantmentCostMessage(bookEnchant, bookPowerLevel);
+                }
+            }
+            else {
+                invalidEnchantmentMessage(bookEnchant, bookPowerLevel);
             }
         }
         if(!enchantedBookMeta.hasStoredEnchants()){

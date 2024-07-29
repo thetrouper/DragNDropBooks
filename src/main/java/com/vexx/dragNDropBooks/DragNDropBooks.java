@@ -57,8 +57,7 @@ public final class DragNDropBooks extends JavaPlugin implements Listener {
         if(book == null || enchantedItem == null || book.getType().isAir() || enchantedItem.getType().isAir()
                 || (book.getType() != Material.ENCHANTED_BOOK && book.getType() != Material.BOOK)) return;
         System.out.println("book: " + book);
-        System.out.println("enchantedItem: " + enchantedItem);;
-        if(!(enchantedItem.getItemMeta() instanceof EnchantmentStorageMeta)) return;
+        System.out.println("enchantedItem: " + enchantedItem);
         Disenchanter disenchanter = new Disenchanter(player, book, enchantedItem, new ConfigManager(this));
         if(!disenchanter.isValidItemStacks()) return;
         disenchanter.RemoveEnchantment();
