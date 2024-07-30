@@ -3,21 +3,15 @@ package com.vexx.dragNDropBooks;
 import com.vexx.dragNDropBooks.Enchants.Disenchanter;
 import com.vexx.dragNDropBooks.Enchants.Enchanter;
 import com.vexx.dragNDropBooks.Utilities.ConfigManager;
-import com.vexx.dragNDropBooks.Utilities.Cost;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.EnchantmentStorageMeta;
-import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
-import java.util.Map;
 
 public final class DragNDropBooks extends JavaPlugin implements Listener {
 
@@ -55,7 +49,8 @@ public final class DragNDropBooks extends JavaPlugin implements Listener {
         ItemStack enchantedItem = e.getCursor();
         Player player = (Player) e.getWhoClicked();
         if(book == null || enchantedItem == null || book.getType().isAir() || enchantedItem.getType().isAir()
-                || (book.getType() != Material.ENCHANTED_BOOK && book.getType() != Material.BOOK)) return;
+                || (book.getType() != Material.ENCHANTED_BOOK && book.getType() != Material.BOOK) ||
+                enchantedItem.getType() == Material.BOOK || enchantedItem.getType() == Material.ENCHANTED_BOOK) return;
         System.out.println("book: " + book);
         System.out.println("enchantedItem: " + enchantedItem);
         Disenchanter disenchanter = new Disenchanter(player, book, enchantedItem, new ConfigManager(this));
