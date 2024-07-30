@@ -1,4 +1,4 @@
-package com.vexx.dragNDropBooks.Enchants;
+package com.vexx.dragNDropBooks.Enchanting;
 
 import com.vexx.dragNDropBooks.Utilities.ConfigManager;
 import com.vexx.dragNDropBooks.Utilities.Formatter;
@@ -54,7 +54,7 @@ public class Disenchanter {
         if(enchantedBookMeta.hasEnchant(itemEnchantment))
             enchantmentPowerLevel += enchantedBookMeta.getEnchantLevel(itemEnchantment);
         return (int) Math.round((itemPowerLevel - enchantmentPowerLevel)
-                * config.player_level_cost_per_enchant_level * config.refund_rate);
+                * config.enchant_costs.get(itemEnchantment) * config.refund_rate);
     }
 
     private void applyEnchantmentRefund(Enchantment itemEnchantment, Integer itemPowerLevel){

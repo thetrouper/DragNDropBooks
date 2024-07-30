@@ -8,9 +8,274 @@
 # refund_rate is the rate the player will be refunded upon removing an enchant onto a book.
 # If the book already has the same type of enchant, the player will be refunded the difference of
 # (items_enchant_level - books_enchant_level) * player_level_cost_per_enchant_level * refund_rate
+
 cost_settings:
   enabled: false
-  player_level_cost_per_enchant_level: 3
-  refund_settings:
-    refund_rate: 1
+
+
+enchantments:
+  channeling:
+    conflicts:
+      - "Riptide"
+    name: "Channeling"
+    max_level: 1
+    cost: 4
+  protection:
+    conflicts:
+      - "Blast Protection"
+      - "Fire Protection"
+      - "Projectile Protection"
+    name: "Protection"
+    max_level: 4
+    cost: 1
+  fire_protection:
+    conflicts:
+      - "Blast Protection"
+      - "Protection"
+      - "Projectile Protection"
+    name: "Fire Protection"
+    max_level: 4
+    cost: 1
+  feather_falling:
+    conflicts: []
+    name: "Feather Falling"
+    max_level: 4
+    cost: 1
+  blast_protection:
+    conflicts:
+      - "Fire Protection"
+      - "Protection"
+      - "Projectile Protection"
+    name: "Blast Protection"
+    max_level: 4
+    cost: 2
+  projectile_projection:
+    conflicts:
+      - "Protection"
+      - "Blast Protection"
+      - "Fire Protection"
+    name: "Projectile Protection"
+    max_level: 4
+    cost: 1
+  thorns:
+    conflicts: []
+    name: "Aqua Affinity"
+    max_level: 1
+    cost: 2
+  respiration:
+    conflicts: []
+    name: "Respiration"
+    max_level: 3
+    cost: 2
+  depth_strider:
+    conflicts: []
+    name: "Depth Strider"
+    max_level: 2
+    cost: 2
+  aqua_affinity:
+    conflicts: []
+    name: "Aqua Affinity"
+    max_level: 1
+    cost: 2
+  sharpness:
+    conflicts:
+      - "Bane of Arthropods"
+        "Smite"
+    name: "Sharpness"
+    max_level: 5
+    cost: 1
+  smite:
+    conflicts: []
+    name: "Aqua Affinity"
+    max_level: 1
+    cost: 2
+  bane_of_arthopods:
+    conflicts:
+      - "Smite"
+      - "Sharpness"
+    name: "Bane of Arthopods"
+    max_level: 5
+    cost: 1
+  knockback:
+    conflicts: []
+    name: "Knockback"
+    max_level: 2
+    cost: 1
+  fire_aspect:
+    conflicts: []
+    name: "Fire Aspect"
+    max_level: 2
+    cost: 2
+  looting:
+    conflicts: []
+    name: "Looting"
+    max_level: 3
+    cost: 2
+  loyalty:
+    conflicts:
+      - "Riptide"
+    name: "Loyalty"
+    max_level: 3
+    cost: 1
+  efficiency:
+    conflicts: []
+    name: "Efficiency"
+    max_level: 5
+    cost: 1
+  silk_touch:
+    conflicts: []
+    name: "Aqua Affinity"
+    max_level: 1
+    cost: 2
+  unbreaking:
+    conflicts: []
+    name: "Aqua Affinity"
+    max_level: 1
+    cost: 2
+  fortune:
+    conflicts: []
+    name: "Fortune"
+    max_level: 3
+    cost: 2
+  power:
+    conflicts: []
+    name: "Power"
+    max_level: 5
+    cost: 1
+  punch:
+    conflicts: []
+    name: "Punch"
+    max_level: 2
+    cost: 2
+  flame:
+    conflicts: []
+    name: "Flame"
+    max_level: 1
+    cost: 2
+  infinity:
+    conflicts:
+      - "Mending"
+    name: "Infinity"
+    max_level: 1
+    cost: 4
+  luck_of_the_Sea:
+    conflicts: []
+    name: "Luck of the Sea"
+    max_level: 3
+    cost: 2
+  lure:
+    conflicts: []
+    name: "Lure"
+    max_level: 3
+    cost: 2
+  frost_walker:
+    conflicts:
+      - "Depth Strider"
+    name: "Frost Walker"
+    max_level: 4
+    cost: 2
+  mending:
+    conflicts:
+      - "Infinity"
+    name: "Mending"
+    max_level: 1
+    cost: 2
+  impaling:
+    conflicts: []
+    name: "Impaling"
+    max_level: 5
+    cost: 2
+  riptide:
+    conflicts:
+      - Channeling
+      - Loyalty
+    name: "Riptide"
+    max_level: 3
+    cost: 2
+  multishot:
+    conflicts:
+      - "Piercing"
+    name: "Multishot"
+    max_level: 1
+    cost: 2
+  piercing:
+    conflicts:
+      - "Multishot"
+    name: "Piercing"
+    max_level: 1
+    cost: 2
+  quick_charge:
+    conflicts: []
+    name: "Quick Charge"
+    max_level: 3
+    cost: 1
+  soul_speed:
+    conflicts: []
+    name: "Aqua Affinity"
+    max_level: 1
+    cost: 2
+  swift_sneak:
+    conflicts: []
+    name: "Aqua Affinity"
+    max_level: 1
+    cost: 2
+  sweeping_edge:
+    conflicts: []
+    name: "Aqua Affinity"
+    max_level: 1
+    cost: 2
+
+
+
+
+
+
+
+refund_settings:
+  refund_rate: 1
+
+# these are the default cost settings to upgrade books based off of
+# https://minecraft.fandom.com/wiki/Anvil_mechanics#:~:text=Thus%2C%20the%20enchanting%20cost%20is,repair%20costs%2C%20and%20rename%20costs.
+
+#default_enchant_costs:
+#  protection: 1
+#  fire_protection: 1
+#  feather_falling: 1
+#  blast_protection: 2
+#  projectile_projection: 1
+#  thorns: 4
+#  respiration: 2
+#  depth_strider: 2
+#  aqua_affinity: 2
+#  sharpness: 1
+#  smite: 1
+#  bane_of_arthopods: 1
+#  knock_back: 1
+#  fire_aspect: 2
+#  looting: 2
+#  efficiency: 1
+#  silk_touch: 1
+#  unbreaking: 1
+#  fortune: 2
+#  power: 1
+#  punch: 2
+#  flame: 2
+#  infinity: 4
+#  luck_of_the_Sea: 2
+#  lure: 2
+#  frost_walker: 2
+#  mending: 2
+#  impaling: 2
+#  riptide: 2
+#  multishot: 2
+#  piercing: 1
+#  quick_chard: 1
+#  soul_speed: 4
+#  swift_sneak: 4
+#  sweeping_edge: 2
+
+
+
+
+
 

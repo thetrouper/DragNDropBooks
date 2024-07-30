@@ -1,5 +1,6 @@
-package com.vexx.dragNDropBooks.Enchants;
+package com.vexx.dragNDropBooks.Enchanting;
 
+import com.vexx.dragNDropBooks.Enchanting.Records.ConflictCheckResult;
 import com.vexx.dragNDropBooks.Utilities.ConfigManager;
 import com.vexx.dragNDropBooks.Utilities.Formatter;
 import org.bukkit.ChatColor;
@@ -39,7 +40,19 @@ public class Enchanter {
         return enchantedBookMeta.hasStoredEnchants();
     }
 
+    private ConflictCheckResult isNotConflictingEnchant(Enchantment bookEnchantment){
+        Map<Enchantment, Integer> itemEnchants = item.getEnchantments();
+        for(Map.Entry<Enchantment, Integer> itemEnchantment : itemEnchants.entrySet()){
+            if(itemEnchantment.getKey() == bookEnchantment){ continue;}
+            if(itemEnchantment.getKey().conflictsWith(bookEnchantment)){
+                return new ConflictCheckResult(false, itemEnchantment.getKey());
+            }
+        }
+        return new ConflictCheckResult(true, null);
+    }
+
     private boolean isValidEnchantment(Enchantment bookEnchantment, Integer bookPowerLevel){
+        if(!isNotConflictingEnchant(bookEnchantment).result()) return false;
         if(itemMeta.hasEnchant(bookEnchantment) && bookPowerLevel <= itemMeta.getEnchantLevel(bookEnchantment))
             return false;
         return bookEnchantment.canEnchantItem(item);
@@ -51,7 +64,7 @@ public class Enchanter {
         int playerLevel = player.getLevel();
         if(itemMeta.hasEnchant(bookEnchantment))
             itemPowerLevel += itemMeta.getEnchantLevel(bookEnchantment);
-        return (bookPowerLevel - itemPowerLevel) * config.player_level_cost_per_enchant_level;
+        return (bookPowerLevel - itemPowerLevel) * config.enchant_costs.get(bookEnchantment);
     }
 
     private boolean canAffordEnchantmentCost(Enchantment bookEnchantment, Integer bookPowerLevel){
@@ -68,7 +81,7 @@ public class Enchanter {
     private void cannotAffordEnchantmentCostMessage(Enchantment bookEnchantment, Integer bookPowerLevel){
         player.sendMessage(ChatColor.GOLD + Formatter.getFormattedEnchant(bookEnchantment) + " "
                 + Formatter.toRoman(bookPowerLevel) + ChatColor.RED + " costs " + ChatColor.GOLD +
-                + calculateEnchantmentCost(bookEnchantment, bookPowerLevel) 
+                + calculateEnchantmentCost(bookEnchantment, bookPowerLevel)
                 + ChatColor.RED + " experience levels");
     }
 
@@ -82,6 +95,16 @@ public class Enchanter {
             player.sendMessage(ChatColor.RED + "Unable to apply " + ChatColor.GOLD
                     + Formatter.getFormattedEnchant(bookEnchantment) + " " + Formatter.toRoman(bookPowerLevel)
                     + ChatColor.RED + " to " + ChatColor.GOLD + Formatter.getFormattedItem(item) + ".");
+        }
+        if(!isNotConflictingEnchant(bookEnchantment).result()){
+            player.sendMessage(ChatColor.RED + "Unable to apply " + ChatColor.GOLD
+                    + Formatter.getFormattedEnchant(bookEnchantment) + " " + Formatter.toRoman(bookPowerLevel)
+                    + ChatColor.RED + " to " + ChatColor.GOLD + Formatter.getFormattedItem(item) + ". "
+                    + ChatColor.GOLD + Formatter.getFormattedEnchant(bookEnchantment) + " "
+                    + Formatter.toRoman(bookPowerLevel) + " "
+                    + ChatColor.RED + "conflicts with " + ChatColor.GOLD
+                    + Formatter.getFormattedEnchant(isNotConflictingEnchant(bookEnchantment).enchantment())
+                    + ChatColor.RED + ".");
         }
     }
 

@@ -1,7 +1,7 @@
 package com.vexx.dragNDropBooks;
 
-import com.vexx.dragNDropBooks.Enchants.Disenchanter;
-import com.vexx.dragNDropBooks.Enchants.Enchanter;
+import com.vexx.dragNDropBooks.Enchanting.Disenchanter;
+import com.vexx.dragNDropBooks.Enchanting.Enchanter;
 import com.vexx.dragNDropBooks.Utilities.ConfigManager;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
