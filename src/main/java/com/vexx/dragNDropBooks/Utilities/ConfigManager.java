@@ -16,74 +16,74 @@ public class ConfigManager {
         this.refund_rate = main.getConfig().getDouble("refund_settings.refund_rate");
 
         enchant_costs.put(Enchantment.PROTECTION,
-            main.getConfig().getInt("cost_settings.enchant_costs.protection"));
+            main.getConfig().getInt("default_enchant_costs.enchant_costs.protection"));
         enchant_costs.put(Enchantment.FIRE_PROTECTION,
-            main.getConfig().getInt("cost_settings.enchant_costs.fire_protection"));
+            main.getConfig().getInt("default_enchant_costs.enchant_costs.fire_protection"));
         enchant_costs.put(Enchantment.FEATHER_FALLING,
-            main.getConfig().getInt("cost_settings.enchant_costs.feather_falling"));
+            main.getConfig().getInt("default_enchant_costs.enchant_costs.feather_falling"));
         enchant_costs.put(Enchantment.BLAST_PROTECTION,
-            main.getConfig().getInt("cost_settings.enchant_costs.blast_protection"));
+            main.getConfig().getInt("default_enchant_costs.enchant_costs.blast_protection"));
         enchant_costs.put(Enchantment.PROJECTILE_PROTECTION,
-            main.getConfig().getInt("cost_settings.enchant_costs.projectile_protection"));
+            main.getConfig().getInt("default_enchant_costs.enchant_costs.projectile_protection"));
         enchant_costs.put(Enchantment.THORNS,
-            main.getConfig().getInt("cost_settings.enchant_costs.thorns"));
+            main.getConfig().getInt("default_enchant_costs.enchant_costs.thorns"));
         enchant_costs.put(Enchantment.RESPIRATION,
-            main.getConfig().getInt("cost_settings.enchant_costs.respiration"));
+            main.getConfig().getInt("default_enchant_costs.enchant_costs.respiration"));
         enchant_costs.put(Enchantment.DEPTH_STRIDER,
-            main.getConfig().getInt("cost_settings.enchant_costs.depth_strider"));
+            main.getConfig().getInt("default_enchant_costs.enchant_costs.depth_strider"));
         enchant_costs.put(Enchantment.AQUA_AFFINITY,
-            main.getConfig().getInt("cost_settings.enchant_costs.aqua_affinity"));
+            main.getConfig().getInt("default_enchant_costs.enchant_costs.aqua_affinity"));
         enchant_costs.put(Enchantment.SHARPNESS,
-            main.getConfig().getInt("cost_settings.enchant_costs.sharpness"));
+            main.getConfig().getInt("default_enchant_costs.enchant_costs.sharpness"));
         enchant_costs.put(Enchantment.SMITE,
-            main.getConfig().getInt("cost_settings.enchant_costs.smite"));
+            main.getConfig().getInt("default_enchant_costs.enchant_costs.smite"));
         enchant_costs.put(Enchantment.BANE_OF_ARTHROPODS,
-            main.getConfig().getInt("cost_settings.enchant_costs.bane_of_arthopods"));
+            main.getConfig().getInt("default_enchant_costs.enchant_costs.bane_of_arthropods"));
         enchant_costs.put(Enchantment.KNOCKBACK,
-            main.getConfig().getInt("cost_settings.enchant_costs.knock_back"));
+            main.getConfig().getInt("default_enchant_costs.enchant_costs.knock_back"));
         enchant_costs.put(Enchantment.FIRE_ASPECT,
-            main.getConfig().getInt("cost_settings.enchant_costs.fire_aspect"));
+            main.getConfig().getInt("default_enchant_costs.enchant_costs.fire_aspect"));
         enchant_costs.put(Enchantment.LOOTING,
-            main.getConfig().getInt("cost_settings.enchant_costs.looting"));
+            main.getConfig().getInt("default_enchant_costs.enchant_costs.looting"));
         enchant_costs.put(Enchantment.EFFICIENCY,
-            main.getConfig().getInt("cost_settings.enchant_costs.efficiency"));
+            main.getConfig().getInt("default_enchant_costs.enchant_costs.efficiency"));
         enchant_costs.put(Enchantment.SILK_TOUCH,
-            main.getConfig().getInt("cost_settings.enchant_costs.silk_touch"));
+            main.getConfig().getInt("default_enchant_costs.enchant_costs.silk_touch"));
         enchant_costs.put(Enchantment.UNBREAKING,
-            main.getConfig().getInt("cost_settings.enchant_costs.unbreaking"));
+            main.getConfig().getInt("default_enchant_costs.enchant_costs.unbreaking"));
         enchant_costs.put(Enchantment.FORTUNE,
-            main.getConfig().getInt("cost_settings.enchant_costs.fortune"));
+            main.getConfig().getInt("default_enchant_costs.enchant_costs.fortune"));
         enchant_costs.put(Enchantment.POWER,
-            main.getConfig().getInt("cost_settings.enchant_costs.power"));
+            main.getConfig().getInt("default_enchant_costs.enchant_costs.power"));
         enchant_costs.put(Enchantment.PUNCH,
-            main.getConfig().getInt("cost_settings.enchant_costs.punch"));
+            main.getConfig().getInt("default_enchant_costs.enchant_costs.punch"));
         enchant_costs.put(Enchantment.FLAME,
-            main.getConfig().getInt("cost_settings.enchant_costs.flame"));
+            main.getConfig().getInt("default_enchant_costs.enchant_costs.flame"));
         enchant_costs.put(Enchantment.INFINITY,
-            main.getConfig().getInt("cost_settings.enchant_costs.infinity"));
+            main.getConfig().getInt("default_enchant_costs.enchant_costs.infinity"));
         enchant_costs.put(Enchantment.LUCK_OF_THE_SEA,
-            main.getConfig().getInt("cost_settings.enchant_costs.luck_of_the_sea"));
+            main.getConfig().getInt("default_enchant_costs.enchant_costs.luck_of_the_sea"));
         enchant_costs.put(Enchantment.LURE,
-            main.getConfig().getInt("cost_settings.enchant_costs.lure"));
+            main.getConfig().getInt("default_enchant_costs.enchant_costs.lure"));
         enchant_costs.put(Enchantment.FROST_WALKER,
-            main.getConfig().getInt("cost_settings.enchant_costs.frost_walker"));
+            main.getConfig().getInt("default_enchant_costs.enchant_costs.frost_walker"));
         enchant_costs.put(Enchantment.MENDING,
-            main.getConfig().getInt("cost_settings.enchant_costs.mending"));
+            main.getConfig().getInt("default_enchant_costs.enchant_costs.mending"));
         enchant_costs.put(Enchantment.IMPALING,
-            main.getConfig().getInt("cost_settings.enchant_costs.impaling"));
+            main.getConfig().getInt("default_enchant_costs.enchant_costs.impaling"));
         enchant_costs.put(Enchantment.RIPTIDE,
-            main.getConfig().getInt("cost_settings.enchant_costs.riptide"));
+            main.getConfig().getInt("default_enchant_costs.enchant_costs.riptide"));
         enchant_costs.put(Enchantment.MULTISHOT,
-            main.getConfig().getInt("cost_settings.enchant_costs.multishot"));
+            main.getConfig().getInt("default_enchant_costs.enchant_costs.multishot"));
         enchant_costs.put(Enchantment.PIERCING,
-            main.getConfig().getInt("cost_settings.enchant_costs.piercing"));
+            main.getConfig().getInt("default_enchant_costs.enchant_costs.piercing"));
         enchant_costs.put(Enchantment.QUICK_CHARGE,
-            main.getConfig().getInt("cost_settings.enchant_costs.quick_chard"));
+            main.getConfig().getInt("default_enchant_costs.enchant_costs.quick_charg"));
         enchant_costs.put(Enchantment.SOUL_SPEED,
-            main.getConfig().getInt("cost_settings.enchant_costs.soul_speed"));
+            main.getConfig().getInt("default_enchant_costs.enchant_costs.soul_speed"));
         enchant_costs.put(Enchantment.SWIFT_SNEAK,
-            main.getConfig().getInt("cost_settings.enchant_costs.swift_sneak"));
+            main.getConfig().getInt("default_enchant_costs.enchant_costs.swift_sneak"));
         enchant_costs.put(Enchantment.SWEEPING_EDGE,
-            main.getConfig().getInt("cost_settings.enchant_costs.sweeping_edge"));
+            main.getConfig().getInt("default_enchant_costs.enchant_costs.sweeping_edge"));
     }
 }

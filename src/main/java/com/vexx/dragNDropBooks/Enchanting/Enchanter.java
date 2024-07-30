@@ -64,7 +64,7 @@ public class Enchanter {
         int playerLevel = player.getLevel();
         if(itemMeta.hasEnchant(bookEnchantment))
             itemPowerLevel += itemMeta.getEnchantLevel(bookEnchantment);
-        return (bookPowerLevel - itemPowerLevel) * config.enchant_costs.get(bookEnchantment);
+        return (bookPowerLevel - itemPowerLevel) * config.enchant_costs.getOrDefault(bookEnchantment, 2);
     }
 
     private boolean canAffordEnchantmentCost(Enchantment bookEnchantment, Integer bookPowerLevel){
@@ -108,6 +108,12 @@ public class Enchanter {
         }
     }
 
+    private void applyEnchantmentToItem(Enchantment bookEnchant, Integer bookPowerLevel) {
+        item.addUnsafeEnchantment(bookEnchant, bookPowerLevel);
+        enchantedBookMeta.removeStoredEnchant(bookEnchant);
+        enchantedBook.setItemMeta(enchantedBookMeta);
+    }
+
     public void applyEnchantment() {
         Map<Enchantment, Integer> enchantments = enchantedBookMeta.getStoredEnchants();
         for(Map.Entry<Enchantment, Integer> enchant : enchantments.entrySet()){
@@ -115,14 +121,18 @@ public class Enchanter {
             Integer bookPowerLevel = enchant.getValue();
             if(isValidEnchantment(bookEnchant, bookPowerLevel))
             {
-                if(canAffordEnchantmentCost(bookEnchant, bookPowerLevel)){
-                    item.addUnsafeEnchantment(bookEnchant, bookPowerLevel);
-                    enchantedBookMeta.removeStoredEnchant(bookEnchant);
-                    enchantedBook.setItemMeta(enchantedBookMeta);
-                    applyEnchantmentCost(bookEnchant, bookPowerLevel);
+                if(config.cost_settings_enabled)
+                {
+                    if(canAffordEnchantmentCost(bookEnchant, bookPowerLevel)){
+                        applyEnchantmentCost(bookEnchant, bookPowerLevel);
+                        applyEnchantmentToItem(bookEnchant, bookPowerLevel);
+                    }
+                    else{
+                        cannotAffordEnchantmentCostMessage(bookEnchant, bookPowerLevel);
+                    }
                 }
                 else{
-                    cannotAffordEnchantmentCostMessage(bookEnchant, bookPowerLevel);
+                    applyEnchantmentToItem(bookEnchant, bookPowerLevel);
                 }
             }
             else {
