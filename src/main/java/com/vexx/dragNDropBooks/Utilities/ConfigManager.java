@@ -10,7 +10,7 @@ public class ConfigManager {
     public boolean cost_settings_enabled ;
     public double refund_rate;
     public final  Map<Enchantment, Integer> enchant_costs = new HashMap<Enchantment, Integer>();
-    
+
     public ConfigManager(DragNDropBooks main){
         this.cost_settings_enabled = main.getConfig().getBoolean("cost_settings.enabled");
         this.refund_rate = main.getConfig().getDouble("refund_settings.refund_rate");

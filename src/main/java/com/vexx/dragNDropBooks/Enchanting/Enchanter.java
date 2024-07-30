@@ -1,12 +1,12 @@
-package com.vexx.dragNDropBooks.Enchants;
+package com.vexx.dragNDropBooks.Enchanting;
 
+import com.vexx.dragNDropBooks.Enchanting.Records.ConflictCheckResult;
 import com.vexx.dragNDropBooks.Utilities.ConfigManager;
 import com.vexx.dragNDropBooks.Utilities.Formatter;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.AnvilInventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.EnchantmentStorageMeta;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -40,7 +40,18 @@ public class Enchanter {
         return enchantedBookMeta.hasStoredEnchants();
     }
 
+    private ConflictCheckResult isNotConflictingEnchant(Enchantment bookEnchantment){
+        Map<Enchantment, Integer> itemEnchants = item.getEnchantments();
+        for(Map.Entry<Enchantment, Integer> itemEnchantment : itemEnchants.entrySet()){
+            if(itemEnchantment.getKey().conflictsWith(bookEnchantment)){
+                return new ConflictCheckResult(false, itemEnchantment.getKey());
+            }
+        }
+        return new ConflictCheckResult(true, null);
+    }
+
     private boolean isValidEnchantment(Enchantment bookEnchantment, Integer bookPowerLevel){
+        if(!isNotConflictingEnchant(bookEnchantment).result()) return false;
         if(itemMeta.hasEnchant(bookEnchantment) && bookPowerLevel <= itemMeta.getEnchantLevel(bookEnchantment))
             return false;
         return bookEnchantment.canEnchantItem(item);
@@ -83,6 +94,16 @@ public class Enchanter {
             player.sendMessage(ChatColor.RED + "Unable to apply " + ChatColor.GOLD
                     + Formatter.getFormattedEnchant(bookEnchantment) + " " + Formatter.toRoman(bookPowerLevel)
                     + ChatColor.RED + " to " + ChatColor.GOLD + Formatter.getFormattedItem(item) + ".");
+        }
+        if(!isNotConflictingEnchant(bookEnchantment).result()){
+            player.sendMessage(ChatColor.RED + "Unable to apply " + ChatColor.GOLD
+                    + Formatter.getFormattedEnchant(bookEnchantment) + " " + Formatter.toRoman(bookPowerLevel)
+                    + ChatColor.RED + " to " + ChatColor.GOLD + Formatter.getFormattedItem(item) + ". "
+                    + ChatColor.GOLD + Formatter.getFormattedEnchant(bookEnchantment) + " "
+                    + Formatter.toRoman(bookPowerLevel) + " "
+                    + ChatColor.RED + "conflicts with " + ChatColor.GOLD
+                    + Formatter.getFormattedEnchant(isNotConflictingEnchant(bookEnchantment).enchantment())
+                    + ChatColor.RED + ".");
         }
     }
 

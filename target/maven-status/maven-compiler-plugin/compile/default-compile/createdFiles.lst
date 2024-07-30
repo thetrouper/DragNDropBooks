@@ -1,3 +1,4 @@
 com\vexx\dragNDropBooks\Utilities\Formatter.class
 com\vexx\dragNDropBooks\Enchants\Disenchanter.class
 com\vexx\dragNDropBooks\Utilities\ConfigManager.class
+com\vexx\dragNDropBooks\Enchants\Records\ConflictCheckResult.class

@@ -1,4 +1,4 @@
-package com.vexx.dragNDropBooks.Enchants;
+package com.vexx.dragNDropBooks.Enchanting;
 
 import com.vexx.dragNDropBooks.Utilities.ConfigManager;
 import com.vexx.dragNDropBooks.Utilities.Formatter;
