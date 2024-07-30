@@ -43,6 +43,7 @@ public class Enchanter {
     private ConflictCheckResult isNotConflictingEnchant(Enchantment bookEnchantment){
         Map<Enchantment, Integer> itemEnchants = item.getEnchantments();
         for(Map.Entry<Enchantment, Integer> itemEnchantment : itemEnchants.entrySet()){
+            if(itemEnchantment.getKey() == bookEnchantment){ continue;}
             if(itemEnchantment.getKey().conflictsWith(bookEnchantment)){
                 return new ConflictCheckResult(false, itemEnchantment.getKey());
             }
