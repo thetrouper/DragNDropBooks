@@ -6,6 +6,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.AnvilInventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.EnchantmentStorageMeta;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -51,7 +52,7 @@ public class Enchanter {
         int playerLevel = player.getLevel();
         if(itemMeta.hasEnchant(bookEnchantment))
             itemPowerLevel += itemMeta.getEnchantLevel(bookEnchantment);
-        return (bookPowerLevel - itemPowerLevel) * config.player_level_cost_per_enchant_level;
+        return (bookPowerLevel - itemPowerLevel) * config.enchant_costs.get(bookEnchantment);
     }
 
     private boolean canAffordEnchantmentCost(Enchantment bookEnchantment, Integer bookPowerLevel){
@@ -68,7 +69,7 @@ public class Enchanter {
     private void cannotAffordEnchantmentCostMessage(Enchantment bookEnchantment, Integer bookPowerLevel){
         player.sendMessage(ChatColor.GOLD + Formatter.getFormattedEnchant(bookEnchantment) + " "
                 + Formatter.toRoman(bookPowerLevel) + ChatColor.RED + " costs " + ChatColor.GOLD +
-                + calculateEnchantmentCost(bookEnchantment, bookPowerLevel) 
+                + calculateEnchantmentCost(bookEnchantment, bookPowerLevel)
                 + ChatColor.RED + " experience levels");
     }
 

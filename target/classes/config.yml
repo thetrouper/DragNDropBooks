@@ -8,9 +8,128 @@
 # refund_rate is the rate the player will be refunded upon removing an enchant onto a book.
 # If the book already has the same type of enchant, the player will be refunded the difference of
 # (items_enchant_level - books_enchant_level) * player_level_cost_per_enchant_level * refund_rate
+
 cost_settings:
   enabled: false
   player_level_cost_per_enchant_level: 3
-  refund_settings:
-    refund_rate: 1
+  enchant_costs:
+    protection: 1
+    fire_protection: 1
+    feather_falling: 1
+    blast_protection: 2
+    projectile_projection: 1
+    thorns: 4
+    respiration: 2
+    depth_strider: 2
+    aqua_affinity: 2
+    sharpness: 1
+    smite: 1
+    bane_of_arthopods: 1
+    knock_back: 1
+    fire_aspect: 2
+    looting: 2
+    efficiency: 1
+    silk_touch: 1
+    unbreaking: 1
+    fortune: 2
+    power: 1
+    punch: 2
+    flame: 2
+    infinity: 4
+    luck_of_the_Sea: 2
+    lure: 2
+    frost_walker: 2
+    mending: 2
+    impaling: 2
+    riptide: 2
+    multishot: 2
+    piercing: 1
+    quick_chard: 1
+    soul_speed: 4
+    swift_sneak: 4
+    sweeping_edge: 2
+
+refund_settings:
+  refund_rate: 1
+
+# these are the default cost settings to upgrade books based off of
+# https://minecraft.fandom.com/wiki/Anvil_mechanics#:~:text=Thus%2C%20the%20enchanting%20cost%20is,repair%20costs%2C%20and%20rename%20costs.
+
+#default_enchant_costs:
+#  protection: 1
+#  fire_protection: 1
+#  feather_falling: 1
+#  blast_protection: 2
+#  projectile_projection: 1
+#  thorns: 4
+#  respiration: 2
+#  depth_strider: 2
+#  aqua_affinity: 2
+#  sharpness: 1
+#  smite: 1
+#  bane_of_arthopods: 1
+#  knock_back: 1
+#  fire_aspect: 2
+#  looting: 2
+#  efficiency: 1
+#  silk_touch: 1
+#  unbreaking: 1
+#  fortune: 2
+#  power: 1
+#  punch: 2
+#  flame: 2
+#  infinity: 4
+#  luck_of_the_Sea: 2
+#  lure: 2
+#  frost_walker: 2
+#  mending: 2
+#  impaling: 2
+#  riptide: 2
+#  multishot: 2
+#  piercing: 1
+#  quick_chard: 1
+#  soul_speed: 4
+#  swift_sneak: 4
+#  sweeping_edge: 2
+
+
+default_enchant_costs:
+  protection: 1
+  fire_protection: 1
+  feather_falling: 1
+  blast_protection: 2
+  projectile_projection: 1
+  thorns: 4
+  respiration: 2
+  depth_strider: 2
+  aqua_affinity: 2
+  sharpness: 1
+  smite: 1
+  bane_of_arthopods: 1
+  knock_back: 1
+  fire_aspect: 2
+  looting: 2
+  efficiency: 1
+  silk_touch: 1
+  unbreaking: 1
+  fortune: 2
+  power: 1
+  punch: 2
+  flame: 2
+  infinity: 4
+  luck_of_the_Sea: 2
+  lure: 2
+  frost_walker: 2
+  mending: 2
+  impaling: 2
+  riptide: 2
+  multishot: 2
+  piercing: 1
+  quick_chard: 1
+  soul_speed: 4
+  swift_sneak: 4
+  sweeping_edge: 2
+
+
+
 
