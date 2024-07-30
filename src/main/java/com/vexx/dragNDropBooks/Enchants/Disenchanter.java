@@ -73,7 +73,8 @@ public class Disenchanter {
         int playerRefund = calculateEnchantmentRefund(itemEnchantment, itemPowerLevel);
         player.sendMessage(ChatColor.GREEN + "Refunded "
             + ChatColor.GOLD + playerRefund
-            + ChatColor.GREEN + " of levels worth of experience points.");
+            + ChatColor.GREEN + " levels of experience points for "
+            + ChatColor.GOLD + Formatter.getFormattedEnchant(itemEnchantment) + " " + Formatter.toRoman(itemPowerLevel));
     }
 
     public void RemoveEnchantment() {
