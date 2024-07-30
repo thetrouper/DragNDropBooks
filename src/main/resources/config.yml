@@ -11,7 +11,6 @@
 
 cost_settings:
   enabled: false
-  player_level_cost_per_enchant_level: 3
   enchant_costs:
     protection: 1
     fire_protection: 1
