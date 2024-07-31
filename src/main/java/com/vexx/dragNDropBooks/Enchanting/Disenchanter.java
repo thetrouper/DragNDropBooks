@@ -1,5 +1,6 @@
 package com.vexx.dragNDropBooks.Enchanting;
 
+import com.vexx.dragNDropBooks.Enchanting.Records.ConflictCheckResult;
 import com.vexx.dragNDropBooks.Utilities.ConfigManager;
 import com.vexx.dragNDropBooks.Utilities.Formatter;
 import org.bukkit.Material;
@@ -42,6 +43,7 @@ public class Disenchanter {
     }
 
     private boolean isValidEnchantment(Enchantment itemEnchantment, Integer itemPowerLevel){
+        if(!isNotConflictingEnchant(itemEnchantment).result()) return false;
         return !enchantedBookMeta.hasEnchant(itemEnchantment) || itemPowerLevel >= enchantedBookMeta.getEnchantLevel(itemEnchantment);
     }
 
@@ -54,16 +56,41 @@ public class Disenchanter {
                 * config.enchant_costs.getOrDefault(itemEnchantment, 3) * config.refund_rate);
     }
 
+    private ConflictCheckResult isNotConflictingEnchant(Enchantment itemEnchantment){
+        Map<Enchantment, Integer> bookEnchantments = enchantedBookMeta.getStoredEnchants();
+        for(Map.Entry<Enchantment, Integer> bookEnchantment : bookEnchantments.entrySet()){
+            if(bookEnchantment.getKey() == itemEnchantment){ continue;}
+            if(bookEnchantment.getKey().conflictsWith(itemEnchantment)){
+                return new ConflictCheckResult(false, bookEnchantment.getKey());
+            }
+        }
+        return new ConflictCheckResult(true, null);
+    }
+
     private void applyEnchantmentRefund(Enchantment itemEnchantment, Integer itemPowerLevel){
         player.setLevel(player.getLevel() + calculateEnchantmentRefund(itemEnchantment, itemPowerLevel));
         sendApplyEnchantRefundMessage(itemEnchantment, itemPowerLevel);
     }
 
     private void sendInvalidEnchantmentMessage(Enchantment itemEnchantment, Integer itemPowerLevel){
-        player.sendMessage(ChatColor.RED + "You already have a higher level of "
-                + ChatColor.GOLD + Formatter.getFormattedEnchant(itemEnchantment) + ChatColor.RED
-                + " on your book.");
+        if(enchantedBookMeta.hasEnchant(itemEnchantment) && itemPowerLevel
+          <= enchantedBookMeta.getEnchantLevel(itemEnchantment)){
+            player.sendMessage(ChatColor.RED + "You already have a higher level of "
+            + ChatColor.GOLD + Formatter.getFormattedEnchant(itemEnchantment) + ChatColor.RED
+            + " on your book.");
+        }
 
+        if(!isNotConflictingEnchant(itemEnchantment).result()) {
+             player.sendMessage(ChatColor.RED + "Unable to apply " + ChatColor.GOLD
+            + Formatter.getFormattedEnchant(itemEnchantment) + " " + Formatter.toRoman(itemPowerLevel)
+            + ChatColor.RED + " to " + ChatColor.GOLD + Formatter.getFormattedItem(enchantedItem)
+            + ChatColor.RED + ". "
+            + ChatColor.GOLD + Formatter.getFormattedEnchant(itemEnchantment) + " "
+            + Formatter.toRoman(itemPowerLevel) + " "
+            + ChatColor.RED + "conflicts with " + ChatColor.GOLD
+            + Formatter.getFormattedEnchant(isNotConflictingEnchant(itemEnchantment).enchantment())
+            + ChatColor.RED + ".");
+        }
     }
 
     private void sendApplyEnchantRefundMessage(Enchantment itemEnchantment, Integer itemPowerLevel){

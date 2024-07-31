@@ -1,33 +1,37 @@
 # set enabled to be true to enable cost settings
 
-# player_level_cost_per_enchant_level is the amount of levels a player must pay
-# in order to apply an enchant. Using the default value of 3, efficiency 5 costs 15 levels to apply.
-# This calculation considers already applied enchants. If a player has Efficency 3 and applies efficency 5, using
-# the default settings it will be a cost of six, 2 power levels * 3
-
-# refund_rate is the rate the player will be refunded upon removing an enchant onto a book.
-# If the book already has the same type of enchant, the player will be refunded the difference of
-# (items_enchant_level - books_enchant_level) * player_level_cost_per_enchant_level * refund_rate
-
 cost_settings:
   enabled: true
 
+# refund_rate is the rate the player will be refunded upon removing an enchant onto a book.
+# If the book already has the same type of enchant, the player will be refunded the difference of
+# of the enchants * the default enchant cost * the refund rate. If the enchant doesn't already exist,
+# the player will be refunded the enchant level * default_enchanst_cost * refund rate.
+
 refund_settings:
   refund_rate: 1
+
+# these are the default cost settings to upgrade books based off of
+# https://minecraft.fandom.com/wiki/Anvil_mechanics#:~:text=Thus%2C%20the%20enchanting%20cost%20is,repair%20costs%2C%20and%20rename%20costs.
+
+# default_enchant_cost is the amount of levels a player must pay
+# in order to apply an enchant. Using the default value of 1, efficiency 5 costs 5 levels to apply.
+# This calculation considers already applied enchants. If a player has Efficency 3 and applies efficency 5, using
+# the default settings it will be a cost of two, 2 power levels * 1.
 
 default_enchant_costs:
   protection: 1
   fire_protection: 1
   feather_falling: 1
   blast_protection: 2
-  projectile_projection: 1
+  projectile_protection: 1
   thorns: 4
   respiration: 2
   depth_strider: 2
   aqua_affinity: 2
   sharpness: 1
   smite: 1
-  bane_of_arthopods: 1
+  bane_of_arthropods: 1
   knock_back: 1
   fire_aspect: 2
   looting: 2
@@ -39,7 +43,7 @@ default_enchant_costs:
   punch: 2
   flame: 2
   infinity: 4
-  luck_of_the_Sea: 2
+  luck_of_the_sea: 2
   lure: 2
   frost_walker: 2
   mending: 2
@@ -47,51 +51,13 @@ default_enchant_costs:
   riptide: 2
   multishot: 2
   piercing: 1
-  quick_chard: 1
+  quick_charge: 1
   soul_speed: 4
   swift_sneak: 4
   sweeping_edge: 2
+  channeling: 4
+  wind_burst: 4
 
-
-# these are the default cost settings to upgrade books based off of
-# https://minecraft.fandom.com/wiki/Anvil_mechanics#:~:text=Thus%2C%20the%20enchanting%20cost%20is,repair%20costs%2C%20and%20rename%20costs.
-
-#default_enchant_costs:
-#  protection: 1
-#  fire_protection: 1
-#  feather_falling: 1
-#  blast_protection: 2
-#  projectile_projection: 1
-#  thorns: 4
-#  respiration: 2
-#  depth_strider: 2
-#  aqua_affinity: 2
-#  sharpness: 1
-#  smite: 1
-#  bane_of_arthopods: 1
-#  knock_back: 1
-#  fire_aspect: 2
-#  looting: 2
-#  efficiency: 1
-#  silk_touch: 1
-#  unbreaking: 1
-#  fortune: 2
-#  power: 1
-#  punch: 2
-#  flame: 2
-#  infinity: 4
-#  luck_of_the_Sea: 2
-#  lure: 2
-#  frost_walker: 2
-#  mending: 2
-#  impaling: 2
-#  riptide: 2
-#  multishot: 2
-#  piercing: 1
-#  quick_chard: 1
-#  soul_speed: 4
-#  swift_sneak: 4
-#  sweeping_edge: 2
 
 
 
