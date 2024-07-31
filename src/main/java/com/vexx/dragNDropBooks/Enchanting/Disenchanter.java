@@ -28,9 +28,6 @@ public class Disenchanter {
         if(book.getItemMeta() instanceof EnchantmentStorageMeta){
             this.enchantedBookMeta = (EnchantmentStorageMeta) book.getItemMeta();
         }
-        System.out.println("Disenchanter initiated.");
-        System.out.printf("Disenchanter.init: enchantedItem = %s", enchantedItem);
-        System.out.printf("Disenchanter.init: book = %s", book);
     }
 
     public ItemStack getEnchantedBook() {
@@ -54,7 +51,7 @@ public class Disenchanter {
         if(enchantedBookMeta.hasEnchant(itemEnchantment))
             enchantmentPowerLevel += enchantedBookMeta.getEnchantLevel(itemEnchantment);
         return (int) Math.round((itemPowerLevel - enchantmentPowerLevel)
-                * config.enchant_costs.get(itemEnchantment) * config.refund_rate);
+                * config.enchant_costs.getOrDefault(itemEnchantment, 3) * config.refund_rate);
     }
 
     private void applyEnchantmentRefund(Enchantment itemEnchantment, Integer itemPowerLevel){
@@ -70,6 +67,7 @@ public class Disenchanter {
     }
 
     private void sendApplyEnchantRefundMessage(Enchantment itemEnchantment, Integer itemPowerLevel){
+        if(!config.cost_settings_enabled) return;
         int playerRefund = calculateEnchantmentRefund(itemEnchantment, itemPowerLevel);
         player.sendMessage(ChatColor.GREEN + "Refunded "
             + ChatColor.GOLD + playerRefund

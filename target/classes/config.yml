@@ -9,6 +9,12 @@
 # If the book already has the same type of enchant, the player will be refunded the difference of
 # (items_enchant_level - books_enchant_level) * player_level_cost_per_enchant_level * refund_rate
 
+cost_settings:
+  enabled: true
+
+refund_settings:
+  refund_rate: 1
+
 default_enchant_costs:
   protection: 1
   fire_protection: 1
@@ -46,8 +52,6 @@ default_enchant_costs:
   swift_sneak: 4
   sweeping_edge: 2
 
-refund_settings:
-  refund_rate: 1
 
 # these are the default cost settings to upgrade books based off of
 # https://minecraft.fandom.com/wiki/Anvil_mechanics#:~:text=Thus%2C%20the%20enchanting%20cost%20is,repair%20costs%2C%20and%20rename%20costs.
