@@ -3,6 +3,8 @@
 cost_settings:
   enabled: true
 
+disenchant_settings:
+  enabled: true
 # refund_rate is the rate the player will be refunded upon removing an enchant onto a book.
 # If the book already has the same type of enchant, the player will be refunded the difference of
 # of the enchants * the default enchant cost * the refund rate. If the enchant doesn't already exist,
